@@ -1,0 +1,14 @@
+---
+interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+---
+
+<button
+  type="button"
+  class="rounded bg-gray-900 text-white mx-2 my-2 cursor-pointer hover:bg-sky-950"
+>
+  {content}
+</button>

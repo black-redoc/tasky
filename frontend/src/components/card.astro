@@ -1,0 +1,29 @@
+---
+import Button from "../components/button.astro";
+
+interface Props {
+  title: string;
+  description: string | undefined;
+}
+
+const { title, description } = Astro.props;
+---
+
+<div class="rounded md:w-64 md:h-60 w-40 h-50 flex flex-col bg-sky-50">
+  <h1
+    class="rounded-t w-full bg-sky-800 text-white font-bold flex items-center px-2"
+  >
+    {title}
+  </h1>
+  <div class="flex flex-col justify-between h-full">
+    {
+      description ? (
+        <p class="text-gray-600 px-2 py-1">{description}</p>
+      ) : (
+        <div />
+      )
+    }
+
+    <Button content="Show more" />
+  </div>
+</div>
