@@ -46,7 +46,7 @@ export default () => {
         items={["TODO1", "TODO2", "TODO3", "TODO4", "TODO5"]}
       />
       <section className="flex flex-col justify-center items-center size-12 my-auto">
-        <Button>
+        <Button textColor="text-cyan-600">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="40"
