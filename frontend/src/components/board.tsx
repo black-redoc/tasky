@@ -3,7 +3,7 @@ import Button from "./button";
 
 export default () => {
   return (
-    <article className="flex flex-row gap-4 overflow-x-hidden hover:overflow-x-auto scroll-smooth py-2 items-start max-h-[36rem]">
+    <article className="flex flex-row gap-4 overflow-x-auto scroll-smooth py-2 items-start max-h-[36rem]">
       <BoardColumn
         boardName="New"
         items={[
