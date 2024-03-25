@@ -1,0 +1,16 @@
+---
+interface Props {
+  content: string;
+  href: string;
+}
+
+const { content, href } = Astro.props;
+---
+
+<a
+  type="button"
+  class="rounded bg-gray-900 text-white mx-2 my-2 cursor-pointer hover:bg-sky-950 text-center"
+  href={href}
+>
+  {content}
+</a>

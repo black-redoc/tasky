@@ -7,15 +7,15 @@ const projects = [
     title: "lorem",
     description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
   },
-	{
+  {
     title: "lorem",
     description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
   },
-	{
+  {
     title: "lorem",
     description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
   },
-	{
+  {
     title: "lorem",
     description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
   },
@@ -24,11 +24,10 @@ const projects = [
 
 <Layout title="Treyo">
   <div class="flex gap-4 flex-wrap">
-		{
-			projects.map(({title, description}) => <Card
-      title={title}
-      description={description}
-    />)
-		}
+    {
+      projects.map(({ title, description }) => (
+        <Card title={title} description={description} />
+      ))
+    }
   </div>
 </Layout>
