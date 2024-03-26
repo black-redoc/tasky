@@ -1,33 +1,23 @@
 ---
 import Layout from "../layouts/layout.astro";
 import Card from "../components/card.astro";
+import { getProjects } from "../services/projects.service";
+import { type Project } from "../types/projects";
+import Toast from "../components/toast";
 
-const projects = [
-  {
-    title: "lorem",
-    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-  },
-  {
-    title: "lorem",
-    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-  },
-  {
-    title: "lorem",
-    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-  },
-  {
-    title: "lorem",
-    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-  },
-];
+let projects: Project[] | string = await getProjects();
 ---
 
 <Layout title="Treyo">
   <div class="flex gap-4 flex-wrap">
     {
-      projects.map(({ title, description }) => (
-        <Card title={title} description={description} />
-      ))
+      typeof projects === "string" ? (
+        <Toast message={projects} client:visible />
+      ) : (
+        projects.map(({ title, description }) => (
+          <Card title={title} description={description} />
+        ))
+      )
     }
   </div>
 </Layout>

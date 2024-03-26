@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 if os.getenv("ENVIRONMENT") == "development":
     load_dotenv()
 
+from fastapi.middleware.cors import CORSMiddleware
+
 from fastapi import FastAPI, Response, Request
 from contextlib import asynccontextmanager
 
@@ -40,5 +42,13 @@ async def db_session_middleware(request: Request, call_next):
     return response
 
 
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(task_router)
 app.include_router(project_router)
