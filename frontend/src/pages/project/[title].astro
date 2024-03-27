@@ -1,0 +1,30 @@
+---
+import Layout from "../../layouts/layout.astro";
+import Toast from "../../components/toast";
+import Board from "../../components/board";
+import { getProjectByTitle } from "../../services/projects.service";
+import { groupBy } from "../../services/collections.service";
+
+export const prerender = false;
+
+const { title } = Astro.params;
+
+if (!title) {
+  Astro.redirect("/");
+}
+
+const project = await getProjectByTitle({ title });
+console.log(project)
+const boards_per_status = groupBy({ arr: project.tasks, criteria: "status" });
+---
+
+<Layout title={title}>
+  {
+    typeof project === "string" ? (
+      <Toast message={project} />
+    ) : (
+      <Board boards={boards_per_status}
+      client:visible />
+    )
+  }
+</Layout>

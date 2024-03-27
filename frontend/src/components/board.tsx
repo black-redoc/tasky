@@ -1,50 +1,26 @@
+import { capitalize } from "../services/strings.service";
 import BoardColumn from "./board-column";
 import Button from "./button";
 
-export default () => {
+export default ({ boards }: { boards: any }) => {
+  const getBoards = () => {
+    return ["todo", "doing", "blocked", "done"]
+      .map((status) => ({
+        status,
+        tasks: (boards[status] ?? []).map(
+          ({ title }: { title: string }) => title
+        ),
+      }))
+      .map(({ status, tasks }) => (
+        <BoardColumn
+          boardName={`${capitalize({ word: status })}`}
+          items={tasks}
+        />
+      ));
+  };
   return (
     <article className="flex flex-row gap-4 overflow-x-auto scroll-smooth py-2 items-start max-h-[36rem]">
-      <BoardColumn
-        boardName="New"
-        items={[
-          "TODO1",
-          "TODO2",
-          "TODO3",
-          "TODO4",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-          "TODO5",
-        ]}
-      />
-
-      <BoardColumn
-        boardName="Doing"
-        items={["TODO1", "TODO2", "TODO3", "TODO4", "TODO5"]}
-      />
-
-      <BoardColumn
-        boardName="Testing"
-        items={["TODO1", "TODO2", "TODO3", "TODO4", "TODO5"]}
-      />
-
-      <BoardColumn
-        boardName="Done"
-        items={["TODO1", "TODO2", "TODO3", "TODO4", "TODO5"]}
-      />
+      {getBoards()}
       <section className="flex flex-col justify-center items-center size-12 my-auto">
         <Button textColor="text-cyan-600">
           <svg
