@@ -14,6 +14,7 @@ def get_project_by_title(db: Session, title: str):
         project = db.query(models.Project).filter(models.Project.title == title).first()
         if not project:
             raise Exception(f"Project {title} not found")
+        return project
     except Exception as e:
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
