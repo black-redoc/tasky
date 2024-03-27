@@ -52,6 +52,12 @@ def test_db():
     assert os.getenv("DATABASE_URL") == "sqlite:///./test.db"
 
 
+def test_get_project_by_title(client):
+    response = client.get("/projects/title_test")
+    expected_status_code = 404
+    assert response.status_code == expected_status_code
+
+
 def test_read_projects(client):
     response = client.get("/projects/")
     expected_status_code = 200

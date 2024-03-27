@@ -9,6 +9,18 @@ def get_projects(db: Session, skip: int, limit: int):
     return db.query(models.Project).offset(skip).limit(limit).all()
 
 
+def get_project_by_title(db: Session, title: str):
+    try:
+        project = db.query(models.Project).filter(models.Project.title == title).first()
+        if not project:
+            raise Exception(f"Project {title} not found")
+    except Exception as e:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content={"error": e.args[0] if e.args else str(e)},
+        )
+
+
 def create_project(db: Session, project: schemas.ProjectSchema):
     try:
         model = models.Project(**project.model_dump())

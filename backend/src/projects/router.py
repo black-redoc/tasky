@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, status
-from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from src.settings.database import SessionLocal
-from . import schemas, service, models
+from . import schemas, service
 
 
 def get_db():
@@ -15,6 +14,11 @@ def get_db():
 
 
 router = APIRouter()
+
+
+@router.get("/projects/{title}", response_model=schemas.ProjectSchema)
+async def get_project_by_title(title, db: Session = Depends(get_db)):
+    return service.get_project_by_title(db, title)
 
 
 @router.get("/projects/", response_model=list[schemas.ProjectSchema])

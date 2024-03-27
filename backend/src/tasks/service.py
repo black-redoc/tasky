@@ -3,6 +3,7 @@ from fastapi import status
 from sqlalchemy.orm import Session
 
 from . import models, schemas
+from src.projects.models import Project
 
 
 def get_tasks(db: Session, skip: int, limit: int):
@@ -11,8 +12,10 @@ def get_tasks(db: Session, skip: int, limit: int):
 
 def create_task(db: Session, task: schemas.TaskSchema):
     try:
+        project = db.query(Project).filter(Project.id == task.id).first()
+        task_title = f"{project.title}:{task.title}"
         model = models.Task(
-            title=task.title,
+            title=task_title,
             description=task.description,
             status=task.status,
             project_id=task.project_id,

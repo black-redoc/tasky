@@ -47,6 +47,16 @@ def test_get_projects(mock_db_session):
     assert projects is not None
 
 
+def test_get_project_by_title(mock_db_session):
+    projects = service.get_project_by_title(mock_db_session, title="title")
+    assert projects is None
+
+
+def test_get_project_by_title(mock_db_session):
+    projects = service.get_project_by_title(mock_db_session, title="title")
+    assert projects is None
+
+
 def test_create_project(mock_db_session):
     project_data = schemas.ProjectSchema(
         title="Test Project", description="Test Description"
