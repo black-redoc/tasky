@@ -12,7 +12,7 @@ def get_tasks(db: Session, skip: int, limit: int):
 
 def create_task(db: Session, task: schemas.TaskSchema):
     try:
-        project = db.query(Project).filter(Project.id == task.id).first()
+        project = db.query(Project).filter(Project.id == task.project_id).first()
         task_title = f"{project.title}:{task.title}"
         model = models.Task(
             title=task_title,

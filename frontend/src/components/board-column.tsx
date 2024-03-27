@@ -1,17 +1,47 @@
 import { useState } from "react";
 import Button from "./button";
 import TaskForm from "./task-form";
+import { createTask } from "../services/tasks.service";
 
 export default ({
   items,
   boardName,
+  projectId,
 }: {
   items: string[];
   boardName: string;
+  projectId: number;
 }) => {
   const [editMode, setEditMode] = useState(false);
+  const [tasks, setTasks] = useState(
+    items.map((item) => ({ title: item, edit: false }))
+  );
   const [taskFormActive, setTaskFormActive] = useState(false);
-
+  const addNewTask = () => {
+    setTasks([...tasks, { title: "", edit: true }]);
+  };
+  const createNewTask = async ({
+    title,
+    status,
+  }: {
+    title: string;
+    status: string;
+  }) => {
+    const response = await createTask({
+      title,
+      project_id: projectId,
+      status: status.toLowerCase(),
+    });
+    if (typeof response == "string") {
+      setTasks([...tasks.slice(0, -1)]);
+      console.log(response);
+    } else {
+      setTasks([
+        ...tasks.slice(0, -1),
+        { ...tasks[tasks.length - 1], edit: false },
+      ]);
+    }
+  };
   return (
     <>
       {taskFormActive ? (
@@ -69,18 +99,45 @@ export default ({
           )}
         </h1>
         <section className="overflow-y-auto max-h-[30rem] scroll-smooth focus:scroll-auto">
-          {items.map((item, i) => (
-            <li
-              key={i}
-              className="h-10 w-f hover:text-white hover:bg-slate-700 my-1 py-2 px-3 rounded cursor-pointer"
-              onClick={() => setTaskFormActive(true)}
-            >
-              {item}
-            </li>
-          ))}
+          {tasks.map((item, i) =>
+            !item.edit ? (
+              <li
+                key={i}
+                className="h-10 w-f hover:text-white hover:bg-slate-700 my-1 py-2 px-3 rounded cursor-pointer"
+                onClick={() => setTaskFormActive(true)}
+              >
+                {item.title.substring(1 + item.title.indexOf(":"))}
+              </li>
+            ) : (
+              <section className="flex flex-row px-2 my-1 py-2">
+                <input
+                  className="w-full outline-none px-2"
+                  onChange={(e) => (item.title = e.target.value)}
+                />
+                <svg
+                  onClick={() =>
+                    createNewTask({ title: item.title, status: boardName })
+                  }
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="icon icon-tabler icons-tabler-outline icon-tabler-checkbox text-cyan-700"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M9 11l3 3l8 -8" />
+                  <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+                </svg>
+              </section>
+            )
+          )}
           <li className="flex justify-center items-center">
-            <Button
-            textColor="text-cyan-600">
+            <Button onClick={addNewTask} textColor="text-cyan-600">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"

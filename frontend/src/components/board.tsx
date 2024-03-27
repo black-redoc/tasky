@@ -2,7 +2,7 @@ import { capitalize } from "../services/strings.service";
 import BoardColumn from "./board-column";
 import Button from "./button";
 
-export default ({ boards }: { boards: any }) => {
+export default ({ boards, projectId }: { boards: any; projectId: number }) => {
   const getBoards = () => {
     return ["todo", "doing", "blocked", "done"]
       .map((status) => ({
@@ -10,10 +10,12 @@ export default ({ boards }: { boards: any }) => {
         tasks: (boards[status] ?? []).map(
           ({ title }: { title: string }) => title
         ),
+        projectId,
       }))
-      .map(({ status, tasks }) => (
+      .map(({ status, tasks, projectId }) => (
         <BoardColumn
           boardName={`${capitalize({ word: status })}`}
+          projectId={projectId}
           items={tasks}
         />
       ));

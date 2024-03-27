@@ -24,6 +24,7 @@ const boards_per_status = groupBy({ arr: project.tasks, criteria: "status" });
       <Toast message={project} />
     ) : (
       <Board boards={boards_per_status}
+      projectId={project.id}
       client:visible />
     )
   }
