@@ -9,23 +9,22 @@ export const prerender = false;
 
 const { title } = Astro.params;
 
-if (!title) {
+if (title == undefined) {
   Astro.redirect("/");
 }
 
-const project = await getProjectByTitle({ title });
-console.log(project)
+const project = await getProjectByTitle({ title: title! });
 const boards_per_status = groupBy({ arr: project.tasks, criteria: "status" });
 ---
 
-<Layout title={title}>
+<Layout title={title!}>
   {
     typeof project === "string" ? (
       <Toast message={project} />
     ) : (
       <Board boards={boards_per_status}
       projectId={project.id}
-      client:visible />
+      client:only />
     )
   }
 </Layout>

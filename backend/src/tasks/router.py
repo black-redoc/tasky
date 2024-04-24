@@ -35,8 +35,8 @@ async def create_tasks(
 
 
 @router.put("/tasks/", response_model=schemas.TaskSchema)
-async def update_project(project: schemas.TaskSchema, db: Session = Depends(get_db)):
-    return service.update_task(db, project)
+async def update_project(task: schemas.TaskSchema, db: Session = Depends(get_db)):
+    return service.update_task(db, task)
 
 
 @router.delete("/tasks/{task_id}", status_code=status.HTTP_200_OK)

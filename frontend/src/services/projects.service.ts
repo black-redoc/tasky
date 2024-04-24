@@ -1,4 +1,4 @@
-const BACKEND_URL = import.meta.env.BACKEND_URL;
+const BACKEND_URL = import.meta.env.PUBLIC_BACKEND_URL;
 
 
 export const getProjectByTitle = async ({ title }: { title: string }) => await fetch(

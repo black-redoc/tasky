@@ -1,11 +1,73 @@
 import { useState } from "react";
 import Button from "./button";
 
-export default ({ setTaskFormActive }: { setTaskFormActive: any }) => {
-  const [editTitleMode, setEditTitleMode] = useState(false);
+import { updateTask } from "../services/tasks.service";
+import { updateTaskStatus } from "../store/board.store";
 
-  const saveForm = () => {
-    setTaskFormActive(false);
+export default ({
+  setTaskFormActive,
+  task,
+  setCurrentTask,
+}: {
+  task: { [key: string]: any };
+  setTaskFormActive: any;
+  setCurrentTask: any;
+}) => {
+  const [taskState, setTaskState] = useState(task);
+  const [prevTaskStatus, setPrevTaskStatus] = useState("");
+  const [editTitleMode, setEditTitleMode] = useState(false);
+  const statusSelect = [
+    {
+      Todo: (
+        <option value="Todo" key={1}>
+          Todo
+        </option>
+      ),
+      selected: false,
+    },
+    {
+      Doing: (
+        <option value="Doing" key={2}>
+          Doing
+        </option>
+      ),
+      selected: false,
+    },
+    {
+      Blocked: (
+        <option value="Blocked" key={3}>
+          Blocked
+        </option>
+      ),
+      selected: false,
+    },
+    {
+      Done: (
+        <option value="Done" key={4}>
+          Done
+        </option>
+      ),
+      selected: false,
+    },
+  ];
+
+  const saveForm = ({ closeForm = true }: { closeForm: boolean }) => {
+    setEditTitleMode(false);
+    let updatedTask: any = {
+      ...taskState,
+      status: taskState.status.toLowerCase(),
+    };
+    delete updatedTask["edit"];
+    updateTask({ ...updatedTask });
+    updateTaskStatus({
+      currentStatus: taskState.status.toLowerCase(),
+      prevStatus: prevTaskStatus.toLowerCase(),
+      task: { ...updatedTask },
+    });
+    if (closeForm) {
+      setCurrentTask((state: any) => ({ ...updatedTask }));
+      setTaskFormActive(false);
+    }
   };
   return (
     <article className="absolute top-0 left-0 bottom-0 right-0 bg-slate-800/80 flex items-center justify-center">
@@ -22,9 +84,9 @@ export default ({ setTaskFormActive }: { setTaskFormActive: any }) => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="icon icon-tabler icons-tabler-outline icon-tabler-x"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -35,9 +97,17 @@ export default ({ setTaskFormActive }: { setTaskFormActive: any }) => {
         </div>
         <div className="mt-5 flex flex-row justify-between w-full">
           {editTitleMode ? (
-            <input className="w-full text-gray-600 font-normal focus:ring-cyan-600 ring-inset rounded-md block border-0 ring-1 focus:ring-2 focus:ring-inset leading-6 focus:border-none appearance-none outline-none px-2" />
+            <input
+              className="w-full text-gray-600 font-normal focus:ring-cyan-600 ring-inset rounded-md block border-0 ring-1 focus:ring-2 focus:ring-inset leading-6 focus:border-none appearance-none outline-none px-2"
+              onChange={(e) =>
+                setTaskState({
+                  ...taskState,
+                  title: `${taskState.title.split(":")[0]}:${e.target.value}`,
+                })
+              }
+            />
           ) : (
-            <h1>title</h1>
+            <h1>{taskState.title.split(":")[1]}</h1>
           )}
           {!editTitleMode ? (
             <span
@@ -51,9 +121,9 @@ export default ({ setTaskFormActive }: { setTaskFormActive: any }) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="icon icon-tabler icons-tabler-outline icon-tabler-edit"
               >
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -64,7 +134,7 @@ export default ({ setTaskFormActive }: { setTaskFormActive: any }) => {
             </span>
           ) : (
             <span
-              onClick={() => setEditTitleMode(!editTitleMode)}
+              onClick={() => saveForm({ closeForm: false })}
               className="cursor-pointer"
             >
               <svg
@@ -74,9 +144,9 @@ export default ({ setTaskFormActive }: { setTaskFormActive: any }) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="icon icon-tabler icons-tabler-outline icon-tabler-checkbox"
               >
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -90,20 +160,26 @@ export default ({ setTaskFormActive }: { setTaskFormActive: any }) => {
           <select
             className="py-2 px-2 outline-none focus:ring-cyan-600 ring-inset rounded-md block ring-1 focus:ring-2 focus:ring-inset focus:border-none appearance-none border-gray-800 shadow leading-tight focus:outline-none focus:shadow-outline"
             style={{
-              backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"), none`,
+              backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"), none`,
               backgroundRepeat: "no-repeat",
               backgroundPosition: "right 0.75rem center",
               backgroundSize: "1rem",
             }}
+            value={taskState.status}
+            onChange={(e) => {
+              setPrevTaskStatus(taskState.status);
+              setTaskState({ ...taskState, status: e.target.value });
+            }}
           >
-            <option value="TODO">TODO</option>
-            <option value="Doing">Doing</option>
-            <option value="Blocked">Blocked</option>
-            <option value="Done">Done</option>
+            {statusSelect.map((obj) => Object.values(obj)[0])}
           </select>
           <textarea
             className="outline-none py-1 px-2 h-64 rounded"
             placeholder="Comments..."
+            onChange={(e) =>
+              setTaskState({ ...taskState, description: e.target.value })
+            }
+            value={taskState?.description ?? ""}
           ></textarea>
           <Button
             primaryColor={true}
