@@ -1,15 +1,24 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Button from "./button";
 import TaskForm from "./task-form";
-import { createTask } from "../services/tasks.service";
+import {
+  createTask,
+  deleteTask as deleteTaskService,
+} from "../services/tasks.service";
 import {
   getTasksBoard,
   addTask,
   updateLastTaskCreated,
   boardStore,
   onChangeTaskTitle,
+  setTaskHover,
+  deleteTask as deleteTaskStore,
 } from "../store/board.store";
 import { useStore } from "@nanostores/react";
+
+import DeleteConfirmation from "./delete-confirmation";
+import { setToastMessage } from "../store/toast.store";
+import Toast from "./toast";
 
 export default ({
   boardName,
@@ -25,6 +34,7 @@ export default ({
   );
 
   const [isCreatingTask, setIsCreatingTask] = useState(false);
+  const [deletingTask, setDeletingTask] = useState({} as any);
   const [currentTask, setCurrentTask] = useState({
     title: "",
     description: "",
@@ -66,18 +76,55 @@ export default ({
       project_id: projectId,
       status: status.toLowerCase(),
     });
-    if (typeof response == "string") {
-      // TODO: implement error use case
-    } else {
-      updateLastTaskCreated({
-        status: status.toLowerCase(),
-        newId: response.id,
-      });
-    }
     setIsCreatingTask(false);
+    if (typeof response == "string") {
+      setToastMessage({ message: response });
+      return;
+    }
+    updateLastTaskCreated({
+      ...response
+    });
+    setToastMessage({ message: "Saved task" });
   };
+
+  const taskMouseEnter = ({ id, status }: { id: number; status: string }) =>
+    setTaskHover({ id, status, hover: true });
+
+  const taskMouseOut = ({ id, status }: { id: number; status: string }) =>
+    setTaskHover({ id, status, hover: false });
+
+  const maxLettersPerTitle = ({ word }: { word: string }) => {
+    return word.slice(0, 15) + `${word.length > 15 ? "..." : ""}`;
+  };
+
+  const [isMobile, setIsMobile] = useState(
+    navigator.userAgent.toLowerCase().includes("mobile")
+  );
+
+  const onSureDelete = async () => {
+    const response = await deleteTaskService({ taskId: deletingTask.id });
+
+    if (typeof response === "string") {
+      setToastMessage({ message: response });
+      return;
+    }
+    setToastMessage({ message: "Deleted task" });
+    deleteTaskStore({ ...deletingTask });
+    setDeletingTask({});
+  };
+
+  const onCancelDelete = () => {
+    setDeletingTask({});
+  };
+
+  useEffect(() => {
+    const handleResize = () =>
+      setIsMobile(navigator.userAgent.toLowerCase().includes("mobile"));
+    window.addEventListener("resize", handleResize);
+  }, []);
   return (
     <>
+      <Toast />
       {taskFormActive ? (
         <TaskForm
           setTaskFormActive={setTaskFormActive}
@@ -87,7 +134,18 @@ export default ({
       ) : (
         <></>
       )}
-      <ul className="w-64 h-f bg-slate-200 rounded-xl pb-5">
+      {Object.values(deletingTask).length ? (
+        <DeleteConfirmation
+          taskTitle={deletingTask.title.substring(
+            1 + deletingTask.title.indexOf(":")
+          )}
+          onCancel={onCancelDelete}
+          onSure={onSureDelete}
+        />
+      ) : (
+        <></>
+      )}
+      <ul className="sm:w-6/12 md:w-64 h-f bg-slate-200 rounded-xl pb-5">
         <h1 className="px-3 py-2 text-white font-bold bg-cyan-700 rounded-t flex flex-row justify-between">
           <p>{boardName}</p>
           <svg
@@ -107,21 +165,81 @@ export default ({
             <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
           </svg>
         </h1>
-        <section className="overflow-y-auto max-h-[30rem] scroll-smooth focus:scroll-auto">
+        <section className="overflow-y-auto max-h-[30rem] scroll-smooth focus:scroll-auto min-w-[15rem]">
           {tasks().map((item: any, i: number) =>
             !item.edit ? (
               <li
+                onMouseOver={() =>
+                  taskMouseEnter({
+                    id: item.id,
+                    status: item.status.toLowerCase(),
+                  })
+                }
+                onMouseLeave={() =>
+                  taskMouseOut({
+                    id: item.id,
+                    status: item.status.toLowerCase(),
+                  })
+                }
                 key={i}
-                className="h-10 w-f hover:text-white hover:bg-slate-700 my-1 py-2 px-3 rounded cursor-pointer"
-                onClick={() => {
-                  setTaskFormActive(true);
-                  setCurrentTask({
-                    ...item,
-                    oldStatus: item.status,
-                  });
-                }}
+                className="h-10 w-full hover:text-white hover:bg-slate-700 my-1 py-2 px-3 rounded cursor-pointer flex flex-row justify-between"
               >
-                {item.title.substring(1 + item.title.indexOf(":"))}
+                <div
+                  className="w-5/6"
+                  onClick={() => {
+                    setTaskFormActive(true);
+                    setCurrentTask({
+                      ...item,
+                      oldStatus: item.status,
+                    });
+                  }}
+                >
+                  {maxLettersPerTitle({
+                    word: item.title.substring(1 + item.title.indexOf(":")),
+                  })}
+                </div>
+                {isMobile || item.hover ? (
+                  <div
+                    className="w-1/6"
+                    onMouseUp={() =>
+                      taskMouseEnter({
+                        id: item.id,
+                        status: item.status.toLowerCase(),
+                      })
+                    }
+                    onClick={() =>
+                      setDeletingTask({
+                        title: item.title.substring(
+                          1 + item.title.indexOf(":")
+                        ),
+                        status: item.status,
+                        id: item.id,
+                      })
+                    }
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="cursor-pointer icon icon-tabler icons-tabler-outline icon-tabler-trash text-red-600 hover:text-red-500"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M4 7l16 0" />
+                      <path d="M10 11l0 6" />
+                      <path d="M14 11l0 6" />
+                      <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                      <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                    </svg>
+                  </div>
+                ) : (
+                  <></>
+                )}
               </li>
             ) : (
               <section className="flex flex-row px-2 my-1 py-2" key={i}>

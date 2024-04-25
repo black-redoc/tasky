@@ -4,6 +4,7 @@ import Toast from "../../components/toast";
 import Board from "../../components/board";
 import { getProjectByTitle } from "../../services/projects.service";
 import { groupBy } from "../../services/collections.service";
+import { setToastMessage } from "../../store/toast.store";
 
 export const prerender = false;
 
@@ -14,17 +15,18 @@ if (title == undefined) {
 }
 
 const project = await getProjectByTitle({ title: title! });
+if (typeof project == "string") {
+  setToastMessage({ message: project });
+}
 const boards_per_status = groupBy({ arr: project.tasks, criteria: "status" });
 ---
 
 <Layout title={title!}>
   {
     typeof project === "string" ? (
-      <Toast message={project} />
+      <Toast />
     ) : (
-      <Board boards={boards_per_status}
-      projectId={project.id}
-      client:only />
+      <Board boards={boards_per_status} projectId={project.id} client:only />
     )
   }
 </Layout>

@@ -1,12 +1,50 @@
 import { map, atom } from "nanostores";
 
-export const projectIdStore = atom(-1)
+export const projectIdStore = atom(-1);
 export const boardStore = map({} as any);
 
-
 export const setProjectId = ({ projectId }: { projectId: number }) => {
-  projectIdStore.set(projectId)
-}
+  projectIdStore.set(projectId);
+};
+
+export const deleteTask = ({ id, status }: { id: number; status: string }) => {
+  const tasks = boardStore.get()[status];
+
+  if (!tasks) {
+    return;
+  }
+
+  const updatedTasks = tasks.filter((task: any) => task.id !== id);
+  boardStore.setKey(status, updatedTasks);
+};
+
+export const setTaskHover = ({
+  id,
+  status,
+  hover,
+}: {
+  id: number;
+  status: string;
+  hover: boolean;
+}) => {
+  const tasks = boardStore.get()[status];
+
+  if (!tasks) {
+    return;
+  }
+
+  const updatedTasks = tasks.map((task: any) => {
+    if (task.id === id) {
+      return {
+        ...task,
+        hover,
+      };
+    }
+    return task;
+  });
+
+  boardStore.setKey(status, updatedTasks);
+};
 
 export const initialBoardStore = ({ boards }: { boards: any }) => {
   boardStore.set({
@@ -14,12 +52,20 @@ export const initialBoardStore = ({ boards }: { boards: any }) => {
     doing: [],
     blocked: [],
     done: [],
-    ...boards
-  })
-}
+    ...boards,
+  });
+};
 
-export const onChangeTaskTitle = ({ status, taskTitle, taskId }: { status: string; taskTitle: string; taskId: number }) => {
-  const tasks = boardStore.get()[status]
+export const onChangeTaskTitle = ({
+  status,
+  taskTitle,
+  taskId,
+}: {
+  status: string;
+  taskTitle: string;
+  taskId: number;
+}) => {
+  const tasks = boardStore.get()[status];
 
   if (!tasks) {
     return;
@@ -29,14 +75,14 @@ export const onChangeTaskTitle = ({ status, taskTitle, taskId }: { status: strin
     if (task.id === taskId) {
       return {
         ...task,
-        title: taskTitle
-      }
+        title: taskTitle,
+      };
     }
-    return task
-  })
+    return task;
+  });
 
-  boardStore.setKey(status, updatedTasks)
-}
+  boardStore.setKey(status, updatedTasks);
+};
 export const getTasksBoard = ({ status }: { status: string }) => {
   const tasks = boardStore.get()[status];
 
@@ -47,27 +93,28 @@ export const getTasksBoard = ({ status }: { status: string }) => {
   return tasks.map((task: any) => ({
     ...task,
     projectId: projectIdStore.get(),
-  }))
+  }));
+};
 
-}
-
-export const updateLastTaskCreated = ({ status, newId }: { status: string; newId: number }) => {
+export const updateLastTaskCreated = ({
+  ...task
+}) => {
+  const { status } = task
   const boardTasks = boardStore.get()[status];
 
   if (!boardTasks) {
     return;
   }
 
-  let [last, ...rest] = boardTasks.reverse()
+  const rest = boardTasks.slice(0, boardTasks.length - 1);
   boardStore.setKey(status, [
     ...rest,
     {
-      ...last,
-      id: newId,
-      edit: false
-    }
-  ])
-}
+      ...task,
+      edit: false,
+    },
+  ]);
+};
 
 export const addTask = ({
   status,
@@ -83,32 +130,30 @@ export const addTask = ({
   }
 
   boardStore.setKey(status, [...boardTasks, { ...task, edit: true }]);
-  console.log({ boardStore })
 };
 
 export const updateTaskStatus = ({
-  currentStatus,
-  prevStatus,
   task,
 }: {
-  currentStatus: string;
-  prevStatus: string;
   task: { [key: string]: any };
 }) => {
-  const currentBoardTasks = boardStore.get()[currentStatus];
-  const prevBoardTasks = boardStore.get()[prevStatus];
-  if (!currentBoardTasks) {
-    return;
-  }
-  if (!prevBoardTasks) {
-    return;
+  const currentBoardTasks = boardStore.get()[task.status];
+  const prevBoardTasks = boardStore.get()[task.oldStatus];
+  if (task.oldStatus === task.status) {
+    const updatedTasks = currentBoardTasks.map((obj: any) => {
+      if (obj.id === task.id) {
+        return {
+          ...task
+        }
+      }
+      return obj
+    })
+    boardStore.setKey(task.status, [...updatedTasks])
+    return
   }
 
-  boardStore.setKey(currentStatus, [
-    ...currentBoardTasks,
-    task
-  ])
-  boardStore.setKey(prevStatus, [
-    ...prevBoardTasks.filter((obj: any) => obj.id != task.id)
-  ])
+  boardStore.setKey(task.status, [...currentBoardTasks, task]);
+  boardStore.setKey(task.oldStatus, [
+    ...prevBoardTasks.filter((obj: any) => obj.id != task.id),
+  ]);
 };

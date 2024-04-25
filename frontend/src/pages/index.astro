@@ -4,18 +4,23 @@ import Card from "../components/card.astro";
 import { getProjects } from "../services/projects.service";
 import { type Project } from "../types/projects";
 import Toast from "../components/toast";
+import { setToastMessage } from "../store/toast.store";
 
 let projects: Project[] | string = await getProjects();
+
+if (typeof projects == "string") {
+  setToastMessage({ message: projects });
+}
 ---
 
 <Layout title="Treyo">
   <div class="flex gap-4 flex-wrap">
     {
       typeof projects === "string" ? (
-        <Toast message={projects} client:visible />
+        <Toast client:visible />
       ) : (
-        projects.map(({ title, description }) => (
-          <Card title={title} description={description} />
+        projects.map(({ title, description, id }) => (
+          <Card title={title} description={description} id={id} />
         ))
       )
     }

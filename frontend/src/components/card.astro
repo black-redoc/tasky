@@ -1,17 +1,22 @@
 ---
 import Link from "./link.astro";
+import { deleteProject as deleteProjectService } from "../services/projects.service";
+import DeleteProjectBtn from "./delete-project-btn";
 
 interface Props {
   title: string;
   description: string | undefined;
+  id?: number;
 }
 
-const { title, description } = Astro.props;
+const { title, description, id } = Astro.props;
 ---
-
-<div class="rounded w-60 h-52 flex flex-col bg-sky-50">
+<div class="rounded w-60 h-52 flex flex-col bg-sky-50 relative">
+  <aside id="deleteBtn" class="absolute top-0 pt-1 right-1">
+    <DeleteProjectBtn client:visible id={id}/>
+  </aside>
   <h1
-    class="rounded-t w-full bg-sky-800 text-white font-bold flex items-center px-2"
+    class="rounded-t w-full bg-sky-800 text-white font-bold flex items-center px-2 py-1"
   >
     {title}
   </h1>

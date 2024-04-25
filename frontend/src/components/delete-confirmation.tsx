@@ -1,0 +1,65 @@
+import Button from "./button";
+
+export default ({
+  taskTitle,
+  onCancel,
+  onSure,
+}: {
+  taskTitle: string;
+  onCancel: any;
+  onSure: any;
+}) => {
+  return (
+    <section className="absolute top-0 bottom-0 left-0 right-0 bg-slate-800/80 flex items-center justify-center">
+      <article className="bg-sky-100 w-[18rem] h-[10rem] px-3 py-2 flex flex-col justify-between rounded relative">
+        <svg
+          onClick={onCancel}
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="icon icon-tabler icons-tabler-outline icon-tabler-x absolute top-1 right-1 cursor-pointer"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M18 6l-12 12" />
+          <path d="M6 6l12 12" />
+        </svg>
+
+        <p className="pr-3 text-pretty">
+          Are you sure you want to delete the task
+          <span className="font-medium ml-1">'{taskTitle}'?</span>
+        </p>
+        <aside className="flex flex-row justify-center gap-4">
+          <Button
+            primaryColor={false}
+            borderActive={true}
+            width="w-32"
+            content="Save"
+            fontSize="text-base"
+            textColor="text-slate-500"
+            fontWeight="font-normal"
+            onClick={onSure}
+          >
+            Sure
+          </Button>
+          <Button
+            onClick={onCancel}
+            primaryColor={true}
+            width="w-32"
+            content="Save"
+            fontSize="text-base"
+            textColor="text-white"
+            fontWeight="font-normal"
+          >
+            Cancel
+          </Button>
+        </aside>
+      </article>
+    </section>
+  );
+};

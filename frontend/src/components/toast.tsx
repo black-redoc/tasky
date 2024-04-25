@@ -1,23 +1,23 @@
 import { useState } from "react";
+import { useStore } from "@nanostores/react";
+import { istToastActive, closeToast, toastMessage } from "../store/toast.store";
 
-export default ({ message }: { message: string }) => {
-  const [show, setShow] = useState(true);
+export default () => {
+  const $toastMessage = useStore(toastMessage);
   return (
     <section
       className={`
       absolute top-4 right-4 bg-slate-900 rounded flex flex-row
       justify-between items-start w-64 h-20 p-2
-      ${!show ? "hidden" : ""}
+      ${istToastActive() ? "" : "hidden"}
       `}
     >
       <p className="text-red-400 h-full">
-        {message.length > 30 ? `${message.substring(0, 30)}...` : message}
+        {$toastMessage.length > 30
+          ? `${$toastMessage.substring(0, 30)}...`
+          : $toastMessage}
       </p>
-      <span
-        onClick={() => {
-          setShow(false);
-        }}
-      >
+      <span onClick={closeToast}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
