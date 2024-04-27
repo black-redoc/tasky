@@ -1,13 +1,15 @@
 import Button from "./button";
 
 export default ({
-  taskTitle,
+  title,
   onCancel,
   onSure,
+  isProject,
 }: {
-  taskTitle: string;
+  title: string;
   onCancel: any;
   onSure: any;
+  isProject?: boolean;
 }) => {
   return (
     <section className="absolute top-0 bottom-0 left-0 right-0 bg-slate-800/80 flex items-center justify-center">
@@ -31,8 +33,8 @@ export default ({
         </svg>
 
         <p className="pr-3 text-pretty">
-          Are you sure you want to delete the task
-          <span className="font-medium ml-1">'{taskTitle}'?</span>
+          Are you sure you want to delete the {isProject ? "project" : "task"}
+          <span className="font-medium ml-1">'{title}'?</span>
         </p>
         <aside className="flex flex-row justify-center gap-4">
           <Button

@@ -20,7 +20,7 @@ const { title } = Astro.props;
   <body>
     <nav class="h-12 w-full bg-cyan-700 px-3 flex items-center justify-between">
       <h1 class="text-white font-bold">Treyo</h1>
-      <Dropdown client:visible url={Astro.url} />
+      <Dropdown client:only url={Astro.url} />
     </nav>
     <div class="my-3 mx-5">
       <slot />

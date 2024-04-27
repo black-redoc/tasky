@@ -1,4 +1,9 @@
-export default ({ url }: {  url: { href: string } }) => {
+import { setIsCreateProjectActive } from "../store/project.store";
+
+export default ({ url }: { url: { href: string } }) => {
+  const createNewProject = () => {
+    setIsCreateProjectActive({ isCreatingProject: true });
+  };
   return (
     <div className="relative dropdown">
       <button className="bg-slate-800 rounded-3xl size-8 relative mr-2">
@@ -27,6 +32,15 @@ export default ({ url }: {  url: { href: string } }) => {
             }
           >
             Index
+          </a>
+        </li>
+        <li className="w-22 mt-1">
+          <a
+            href="/"
+            onClick={createNewProject}
+            className="rounded-t bg-gray-200 hover:bg-gray-500 hover:text-white py-2 px-4 block whitespace-no-wrap"
+          >
+            Create project
           </a>
         </li>
       </ul>

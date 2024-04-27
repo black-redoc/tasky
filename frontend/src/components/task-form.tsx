@@ -76,7 +76,7 @@ export default ({
   return (
     <>
       <Toast />
-      <article className="absolute top-0 left-0 bottom-0 right-0 bg-slate-800/80 flex items-center justify-center">
+      <form className="absolute top-0 left-0 bottom-0 right-0 bg-slate-800/80 flex items-center justify-center">
         <section className="h-[35rem] w-[20rem] bg-sky-100 mx-auto rounded py-3 px-4">
           <div className="flex flex-row justify-end w-full">
             <span
@@ -198,7 +198,7 @@ export default ({
             />
           </div>
         </section>
-      </article>
+      </form>
     </>
   );
 };

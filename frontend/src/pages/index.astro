@@ -5,6 +5,7 @@ import { getProjects } from "../services/projects.service";
 import { type Project } from "../types/projects";
 import Toast from "../components/toast";
 import { setToastMessage } from "../store/toast.store";
+import CreateProjectForm from "../components/create-project-form";
 
 let projects: Project[] | string = await getProjects();
 
@@ -14,10 +15,11 @@ if (typeof projects == "string") {
 ---
 
 <Layout title="Treyo">
+  <CreateProjectForm client:only />
   <div class="flex gap-4 flex-wrap">
     {
       typeof projects === "string" ? (
-        <Toast client:visible />
+        <Toast client:only />
       ) : (
         projects.map(({ title, description, id }) => (
           <Card title={title} description={description} id={id} />

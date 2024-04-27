@@ -136,7 +136,7 @@ export default ({
       )}
       {Object.values(deletingTask).length ? (
         <DeleteConfirmation
-          taskTitle={deletingTask.title.substring(
+          title={deletingTask.title.substring(
             1 + deletingTask.title.indexOf(":")
           )}
           onCancel={onCancelDelete}
