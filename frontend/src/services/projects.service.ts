@@ -24,7 +24,7 @@ export const createProject = async ({ ...project }) =>
       "content-type": "application/json",
     },
     body: JSON.stringify(project),
-  }).then((data) => data.status).catch((error) => `Error: ${error.message}`);
+  }).then((data) => data.json()).catch((error) => `Error: ${error.message}`);
 
 export const updateProject = async ({ ...project }) =>
   await fetch(`${BACKEND_URL}/projects/`, {
@@ -38,6 +38,6 @@ export const updateProject = async ({ ...project }) =>
 export const deleteProject = async ({ id }: { id: number }) =>
   await fetch(`${BACKEND_URL}/projects/${id}`, {
     method: "DELETE"
-  }).then((data) => data.status).catch(
+  }).then((data) => data.json()).catch(
     (error) => `Error: ${error.message}`
   );

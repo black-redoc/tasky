@@ -2,6 +2,7 @@ import { useState } from "react";
 import { deleteProject as deleteProjectService } from "../services/projects.service";
 import { setToastMessage } from "../store/toast.store";
 import DeleteConfirmation from "./delete-confirmation";
+import { deleteProject as deleteProjectStore } from "../store/project.store";
 
 export default ({ id, title }: { id?: number; title?: string }) => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -21,11 +22,11 @@ export default ({ id, title }: { id?: number; title?: string }) => {
     }
     const response = await deleteProjectService({ id });
     setIsDeleting(false);
-    if (typeof response === "string") {
-      setToastMessage({ message: "Error deleting project", isError: true });
+    if (Object.keys(response).includes("error")) {
+      setToastMessage({ message: `Error: ${response.error}`, isError: true });
       return;
     }
-
+    deleteProjectStore({ id });
     setToastMessage({ message: "Project deleted successfully" });
   };
   return (

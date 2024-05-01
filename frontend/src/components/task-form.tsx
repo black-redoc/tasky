@@ -55,7 +55,7 @@ export default ({
   const cancelForm = () => {
     setEditTitleMode(false);
     setTaskFormActive(false);
-  }
+  };
 
   const saveForm = async ({ closeForm = true }: { closeForm: boolean }) => {
     setEditTitleMode(false);
@@ -72,7 +72,7 @@ export default ({
       task: { ...updatedTask },
     });
     if (closeForm) {
-      setToastMessage({ message: "Saved task" });
+      setToastMessage({ message: `${task.id ? "Updated" : "Saved"} task` });
       setCurrentTask((state: any) => ({ ...updatedTask }));
       setTaskFormActive(false);
     }
@@ -108,7 +108,7 @@ export default ({
           <div className="mt-5 flex flex-row justify-between w-full">
             {editTitleMode ? (
               <input
-              defaultValue={taskState.title.split(":")[1]}
+                defaultValue={taskState.title.split(":")[1]}
                 className="w-full text-gray-600 font-normal focus:ring-cyan-600 ring-inset rounded-md block border-0 ring-1 focus:ring-2 focus:ring-inset leading-6 focus:border-none appearance-none outline-none px-2 py-1"
                 onChange={(e) =>
                   setTaskState({
@@ -196,7 +196,7 @@ export default ({
                 primaryColor={false}
                 borderActive={true}
                 width="w-32"
-                content="Save"
+                content={`${task.id ? "Update" : "Save"}`}
                 fontSize="text-base"
                 textColor="text-cyan-700"
                 fontWeight="font-medium"

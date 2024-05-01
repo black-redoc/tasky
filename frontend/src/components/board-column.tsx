@@ -77,14 +77,16 @@ export default ({
       status: status.toLowerCase(),
     });
     setIsCreatingTask(false);
-    if (typeof response == "string") {
+    if (Object.keys(response).includes("error")) {
       setToastMessage({ message: response, isError: true });
       return;
     }
     updateLastTaskCreated({
       ...response,
     });
-    setToastMessage({ message: "Saved task" });
+    setToastMessage({
+      message: `${currentTask.id !== 0 ? "Updated" : "Saved"} task`,
+    });
   };
 
   const taskMouseEnter = ({ id, status }: { id: number; status: string }) =>
@@ -104,7 +106,7 @@ export default ({
   const onSureDelete = async () => {
     const response = await deleteTaskService({ taskId: deletingTask.id });
 
-    if (typeof response === "string") {
+    if (Object.keys(response).includes("error")) {
       setToastMessage({ message: response, isError: true });
       return;
     }

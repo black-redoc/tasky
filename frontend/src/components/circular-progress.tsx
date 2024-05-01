@@ -5,17 +5,9 @@ export default ({
   children?: any;
   size?: string;
 }) => {
-  const innerSize = () => {
-    const [number, measure] = size.includes("px")
-      ? [...size.split("px"), "px"]
-      : [...size.split("rem"), "rem"];
-    return `${Number(number) - Number(number) * 0.25}${measure}`;
-  };
   return (
     <article
-      className={`progress-container
-      size-${size}
-      `}
+      className={`size-${size}`}
     >
       <svg
         xmlns="https://www.w3.org/2000/svg"
