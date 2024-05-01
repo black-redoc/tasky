@@ -1,30 +1,14 @@
 ---
 import Layout from "../layouts/layout.astro";
-import Card from "../components/card.astro";
-import { getProjects } from "../services/projects.service";
-import { type Project } from "../types/projects";
-import Toast from "../components/toast";
-import { setToastMessage } from "../store/toast.store";
-import CreateProjectForm from "../components/create-project-form";
+import ProjectForm from "../components/project-form"
+import Projects from "../components/projects";
 
-let projects: Project[] | string = await getProjects();
-
-if (typeof projects == "string") {
-  setToastMessage({ message: projects });
-}
+export const prerender = false;
 ---
 
 <Layout title="Treyo">
-  <CreateProjectForm client:only />
+  <ProjectForm client:only />
   <div class="flex gap-4 flex-wrap">
-    {
-      typeof projects === "string" ? (
-        <Toast client:only />
-      ) : (
-        projects.map(({ title, description, id }) => (
-          <Card title={title} description={description} id={id} />
-        ))
-      )
-    }
+    <Projects client:only />
   </div>
 </Layout>

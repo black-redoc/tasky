@@ -1,8 +1,8 @@
-import { setIsCreateProjectActive } from "../store/project.store";
+import { setIsProjectFormActive } from "../store/project.store";
 
 export default ({ url }: { url: { href: string } }) => {
   const createNewProject = () => {
-    setIsCreateProjectActive({ isCreatingProject: true });
+    setIsProjectFormActive({ projectFormActive: true });
   };
   return (
     <div className="relative dropdown">

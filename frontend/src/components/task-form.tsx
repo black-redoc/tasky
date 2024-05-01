@@ -16,7 +16,6 @@ export default ({
   setCurrentTask: any;
 }) => {
   const [taskState, setTaskState] = useState(task);
-  const [prevTaskStatus, setPrevTaskStatus] = useState("");
   const [editTitleMode, setEditTitleMode] = useState(false);
   const statusSelect = [
     {
@@ -53,6 +52,11 @@ export default ({
     },
   ];
 
+  const cancelForm = () => {
+    setEditTitleMode(false);
+    setTaskFormActive(false);
+  }
+
   const saveForm = async ({ closeForm = true }: { closeForm: boolean }) => {
     setEditTitleMode(false);
     let updatedTask: any = {
@@ -62,7 +66,7 @@ export default ({
     delete updatedTask["edit"];
     const response = await updateTask({ ...updatedTask });
     if (typeof response === "string") {
-      setToastMessage({ message: response });
+      setToastMessage({ message: response, isError: true });
     }
     updateTaskStatus({
       task: { ...updatedTask },
@@ -77,7 +81,7 @@ export default ({
     <>
       <Toast />
       <form className="absolute top-0 left-0 bottom-0 right-0 bg-slate-800/80 flex items-center justify-center">
-        <section className="h-[35rem] w-[20rem] bg-sky-100 mx-auto rounded py-3 px-4">
+        <section className="h-[31rem] w-[20rem] bg-sky-100 mx-auto rounded py-3 px-4">
           <div className="flex flex-row justify-end w-full">
             <span
               onClick={() => setTaskFormActive(false)}
@@ -104,7 +108,8 @@ export default ({
           <div className="mt-5 flex flex-row justify-between w-full">
             {editTitleMode ? (
               <input
-                className="w-full text-gray-600 font-normal focus:ring-cyan-600 ring-inset rounded-md block border-0 ring-1 focus:ring-2 focus:ring-inset leading-6 focus:border-none appearance-none outline-none px-2"
+              defaultValue={taskState.title.split(":")[1]}
+                className="w-full text-gray-600 font-normal focus:ring-cyan-600 ring-inset rounded-md block border-0 ring-1 focus:ring-2 focus:ring-inset leading-6 focus:border-none appearance-none outline-none px-2 py-1"
                 onChange={(e) =>
                   setTaskState({
                     ...taskState,
@@ -118,7 +123,7 @@ export default ({
             {!editTitleMode ? (
               <span
                 onClick={() => setEditTitleMode(!editTitleMode)}
-                className="cursor-pointer"
+                className="cursor-pointer h-[2rem] flex items-center justify-center"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -141,7 +146,7 @@ export default ({
             ) : (
               <span
                 onClick={() => saveForm({ closeForm: false })}
-                className="cursor-pointer"
+                className="cursor-pointer h-[2rem] flex items-center justify-center"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -173,7 +178,6 @@ export default ({
               }}
               value={taskState.status}
               onChange={(e) => {
-                setPrevTaskStatus(taskState.status);
                 setTaskState({ ...taskState, status: e.target.value });
               }}
             >
@@ -187,15 +191,27 @@ export default ({
               }
               value={taskState?.description ?? ""}
             ></textarea>
-            <Button
-              primaryColor={true}
-              width="w-32"
-              content="Save"
-              fontSize="text-base"
-              textColor="text-white"
-              fontWeight="font-normal"
-              onClick={saveForm}
-            />
+            <aside className="w-full flex flex-row gap-3 justify-center items-center">
+              <Button
+                primaryColor={false}
+                borderActive={true}
+                width="w-32"
+                content="Save"
+                fontSize="text-base"
+                textColor="text-cyan-700"
+                fontWeight="font-medium"
+                onClick={saveForm}
+              />
+              <Button
+                primaryColor={true}
+                width="w-32"
+                content="Cancel"
+                fontSize="text-base"
+                textColor="text-white"
+                fontWeight="font-normal"
+                onClick={cancelForm}
+              />
+            </aside>
           </div>
         </section>
       </form>

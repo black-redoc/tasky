@@ -78,11 +78,11 @@ export default ({
     });
     setIsCreatingTask(false);
     if (typeof response == "string") {
-      setToastMessage({ message: response });
+      setToastMessage({ message: response, isError: true });
       return;
     }
     updateLastTaskCreated({
-      ...response
+      ...response,
     });
     setToastMessage({ message: "Saved task" });
   };
@@ -105,7 +105,7 @@ export default ({
     const response = await deleteTaskService({ taskId: deletingTask.id });
 
     if (typeof response === "string") {
-      setToastMessage({ message: response });
+      setToastMessage({ message: response, isError: true });
       return;
     }
     setToastMessage({ message: "Deleted task" });

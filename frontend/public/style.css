@@ -1,0 +1,30 @@
+* {
+  font-family: "Helvetica", "Sans-Serif";
+  box-sizing: border-box;
+}
+
+.progress-circle {
+  fill: none;
+  stroke: url(#GradientColor);
+  stroke-width: 0.2rem;
+  stroke-dasharray: 472;
+  stroke-dashoffset: 472;
+  animation: progress-circle-animation 10s linear forwards;
+  animation-direction: alternate;
+}
+
+@keyframes progress-circle-animation {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.fade-out {
+  animation: fade-out 5s forwards;
+}
+
+@keyframes fade-out {
+  to {
+    display: none;
+  }
+}

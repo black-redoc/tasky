@@ -22,7 +22,7 @@ export default ({ id, title }: { id?: number; title?: string }) => {
     const response = await deleteProjectService({ id });
     setIsDeleting(false);
     if (typeof response === "string") {
-      setToastMessage({ message: "Error deleting project" });
+      setToastMessage({ message: "Error deleting project", isError: true });
       return;
     }
 

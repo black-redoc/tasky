@@ -43,8 +43,8 @@ export default ({
             width="w-32"
             content="Save"
             fontSize="text-base"
-            textColor="text-slate-500"
-            fontWeight="font-normal"
+            textColor="text-cyan-700"
+            fontWeight="font-medium"
             onClick={onSure}
           >
             Sure

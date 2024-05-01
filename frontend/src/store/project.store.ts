@@ -1,15 +1,21 @@
-import { atom } from "nanostores";
+import { atom, map } from "nanostores";
 
-export const isCreateProjectActive = atom(false);
-export const projectsStore = atom([] as any);
+export const isProjectFormActive = atom(false);
+export const projectsStore = map({} as any);
+export const editingProjectStore = map({})
 
-export const setIsCreateProjectActive = ({
-  isCreatingProject,
+export const setIsProjectFormActive = ({
+  projectFormActive,
 }: {
-  isCreatingProject: boolean;
-}) => isCreateProjectActive.set(isCreatingProject);
+  projectFormActive: boolean;
+}) => isProjectFormActive.set(projectFormActive);
 
 export const updateProjectsStore = ({ projects }: { projects: Array<any> }) => {
-  const currentProjects = projectsStore.get()
-  projectsStore.set([...currentProjects, ...projects]);
+  for (let project of projects) {
+    projectsStore.setKey(project.id, { ...project });
+  }
 };
+
+export const setEditingProjectStore = ({ ...project }) => {
+  editingProjectStore.set({ ...project })
+}

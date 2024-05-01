@@ -1,16 +1,21 @@
 import { atom } from "nanostores";
 
-export const toastMessage = atom('')
+export const toastMessage = atom({} as any);
 
-
-export const istToastActive = () => {
-  return toastMessage.get().length
-}
+export const isToastActive = () => {
+  return toastMessage.get().message?.length;
+};
 
 export const closeToast = () => {
-  toastMessage.set('')
-}
+  toastMessage.set("");
+};
 
-export const setToastMessage = ({ message }: { message: string }) => {
-  toastMessage.set(message)
-}
+export const setToastMessage = ({
+  message,
+  isError = false,
+}: {
+  message: string;
+  isError?: boolean;
+}) => {
+  toastMessage.set({ message, isError });
+};
