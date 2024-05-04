@@ -7,6 +7,7 @@ export default ({
 }: {
   content: string;
   href?: string;
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   onClick?: any;
   className?: string;
   isSecondary?: boolean;

@@ -1,26 +1,26 @@
 import { capitalize } from "../services/strings.service";
 import BoardColumn from "./board-column";
 import { useEffect } from "react";
-import { type Board } from "../types/board.types";
 
 import { useStore } from "@nanostores/react";
 import {
   boardStore,
   initialBoardStore,
   setProjectId,
+  type BoardStoreType,
 } from "../store/board.store";
 
 export default ({
   boards,
   projectId,
 }: {
-  boards?: Board;
+  boards?: BoardStoreType;
   projectId: number;
 }) => {
   const $boardStore = useStore(boardStore);
   useEffect(() => {
     initialBoardStore({
-      boards: boards,
+      boards: boards!,
     });
     setProjectId({ projectId });
   }, []);
@@ -28,8 +28,8 @@ export default ({
   return (
     <>
       <article className="flex flex-row gap-4 overflow-x-auto scroll-smooth py-2 items-start max-h-[36rem]">
-        {Object.keys($boardStore as any)
-          .map((status: any) => ({
+        {Object.keys($boardStore)
+          .map((status) => ({
             status,
             projectId,
           }))

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "./button";
 
 import { updateTask } from "../services/tasks.service";
-import { updateTaskStatus } from "../store/board.store";
+import { updateTaskStatus, type TasksType } from "../store/board.store";
 import { setToastMessage } from "../store/toast.store";
 import Toast from "./toast";
 
@@ -11,8 +11,9 @@ export default ({
   task,
   setCurrentTask,
 }: {
-  task: { [key: string]: any };
-  setTaskFormActive: any;
+  task: TasksType;
+  setTaskFormActive: (value: boolean) => void;
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   setCurrentTask: any;
 }) => {
   const [taskState, setTaskState] = useState(task);
@@ -59,7 +60,7 @@ export default ({
 
   const saveForm = async ({ closeForm = true }: { closeForm: boolean }) => {
     setEditTitleMode(false);
-    let updatedTask: any = {
+    const updatedTask = {
       ...taskState,
       status: taskState.status.toLowerCase(),
     };
@@ -73,7 +74,7 @@ export default ({
     });
     if (closeForm) {
       setToastMessage({ message: `${task.id ? "Updated" : "Saved"} task` });
-      setCurrentTask((state: any) => ({ ...updatedTask }));
+      setCurrentTask({ ...updatedTask });
       setTaskFormActive(false);
     }
   };

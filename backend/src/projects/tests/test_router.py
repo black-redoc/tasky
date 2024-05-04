@@ -45,7 +45,9 @@ def run_around_tests():
     try:
         os.remove("test.db")
     except:
-        pass
+        """
+        Do nothing
+        """
 
 
 def test_db():

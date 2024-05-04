@@ -9,6 +9,7 @@ export default ({
   borderActive,
   onClick,
 }: {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   children?: any;
   primaryColor?: boolean;
   width?: string;
@@ -16,7 +17,8 @@ export default ({
   fontSize?: string;
   textColor?: string;
   fontWeight?: string;
-  borderActive?:boolean;
+  borderActive?: boolean;
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   onClick?: any;
 }) => {
   return (

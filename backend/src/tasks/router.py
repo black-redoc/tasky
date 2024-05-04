@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from src.settings.database import SessionLocal
-from . import schemas, service, models
+from . import schemas, service
 
 
 def get_db():

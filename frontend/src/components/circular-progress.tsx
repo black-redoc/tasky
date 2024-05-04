@@ -2,13 +2,12 @@ export default ({
   children,
   size = "0.4rem",
 }: {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   children?: any;
   size?: string;
 }) => {
   return (
-    <article
-      className={`size-${size}`}
-    >
+    <article className={`size-${size}`}>
       <svg
         xmlns="https://www.w3.org/2000/svg"
         version="1.1"

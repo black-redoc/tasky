@@ -1,13 +1,28 @@
 import { atom, map } from "nanostores";
 
+export type ProjectType = {
+  id: number;
+  title: string;
+  description: string;
+  tasks: {
+    id: number;
+    title: string;
+    status: string;
+  }[]
+}
+
+export type ProjectStoreType = {
+  [id: number]: ProjectType
+}
+
 export const isProjectFormActive = atom(false);
-export const projectsStore = map({} as any);
-export const editingProjectStore = map({});
+export const projectsStore = map({} as ProjectStoreType);
+export const editingProjectStore = map({} as ProjectType);
 
 export const deleteProject = ({ id }: { id: number }) => {
-  const newProjects = {} as any;
+  const newProjects = {} as ProjectStoreType;
   const projects = projectsStore.get();
-  for (let project of Object.values(projects) as any) {
+  for (const project of Object.values(projects)) {
     if (project.id === id) {
       continue;
     }
@@ -23,12 +38,12 @@ export const setIsProjectFormActive = ({
   projectFormActive: boolean;
 }) => isProjectFormActive.set(projectFormActive);
 
-export const updateProjectsStore = ({ projects }: { projects: Array<any> }) => {
-  for (let project of projects) {
+export const updateProjectsStore = ({ projects }: { projects: Array<ProjectType> }) => {
+  for (const project of projects) {
     projectsStore.setKey(project.id, { ...project });
   }
 };
 
-export const setEditingProjectStore = ({ ...project }) => {
+export const setEditingProjectStore = ({ project }: { project: ProjectType }) => {
   editingProjectStore.set({ ...project });
 };
