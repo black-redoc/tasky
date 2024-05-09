@@ -27,8 +27,8 @@ export default () => {
           $toastMessage.isError ? "text-red-400" : "text-cyan-400"
         } h-full flex flex-col items-center justify-center`}
       >
-        {$toastMessage.message?.length > 30
-          ? `${$toastMessage.message.substring(0, 30)}...`
+        {$toastMessage.message!.length! > 30
+          ? `${$toastMessage.message!.substring(0, 30)}...`
           : $toastMessage.message}
       </p>
       <span onClick={closeToast}>

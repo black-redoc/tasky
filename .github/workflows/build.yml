@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: ["master"]
 jobs:
-  lint-fastpi:
+  lint-fastapi:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-  test-fastpi:
+  test-fastapi:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -51,7 +51,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.13.1'
+          node-version: "20.13.1"
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
