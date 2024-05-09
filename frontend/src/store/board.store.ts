@@ -1,7 +1,22 @@
 import { map, atom } from "nanostores";
 
+export type TasksType = {
+  id: number;
+  title: string;
+  status: string;
+  description: string;
+  edit?: boolean;
+  oldStatus?: string;
+  project_id?: number;
+  hover?: boolean;
+}
+
+export type BoardStoreType = {
+  [status: string]: TasksType[]
+}
+
 export const projectIdStore = atom(-1);
-export const boardStore = map({} as any);
+export const boardStore = map({} as BoardStoreType);
 
 export const setProjectId = ({ projectId }: { projectId: number }) => {
   projectIdStore.set(projectId);
@@ -14,7 +29,7 @@ export const deleteTask = ({ id, status }: { id: number; status: string }) => {
     return;
   }
 
-  const updatedTasks = tasks.filter((task: any) => task.id !== id);
+  const updatedTasks = tasks.filter((task: TasksType) => task.id !== id);
   boardStore.setKey(status, updatedTasks);
 };
 
@@ -33,7 +48,7 @@ export const setTaskHover = ({
     return;
   }
 
-  const updatedTasks = tasks.map((task: any) => {
+  const updatedTasks = tasks.map((task: TasksType) => {
     if (task.id === id) {
       return {
         ...task,
@@ -46,7 +61,7 @@ export const setTaskHover = ({
   boardStore.setKey(status, updatedTasks);
 };
 
-export const initialBoardStore = ({ boards }: { boards: any }) => {
+export const initialBoardStore = ({ boards }: { boards: BoardStoreType }) => {
   boardStore.set({
     todo: [],
     doing: [],
@@ -71,7 +86,7 @@ export const onChangeTaskTitle = ({
     return;
   }
 
-  const updatedTasks = tasks.map((task: any) => {
+  const updatedTasks = tasks.map((task: TasksType) => {
     if (task.id === taskId) {
       return {
         ...task,
@@ -90,15 +105,15 @@ export const getTasksBoard = ({ status }: { status: string }) => {
     return;
   }
 
-  return tasks.map((task: any) => ({
+  return tasks.map((task: TasksType) => ({
     ...task,
     projectId: projectIdStore.get(),
   }));
 };
 
 export const updateLastTaskCreated = ({
-  ...task
-}) => {
+  task
+}: { task: TasksType }) => {
   const { status } = task
   const boardTasks = boardStore.get()[status];
 
@@ -121,7 +136,7 @@ export const addTask = ({
   task,
 }: {
   status: string;
-  task: { [key: string]: any };
+  task: TasksType;
 }) => {
   const boardTasks = boardStore.get()[status];
 
@@ -135,12 +150,12 @@ export const addTask = ({
 export const updateTaskStatus = ({
   task,
 }: {
-  task: { [key: string]: any };
+  task: TasksType;
 }) => {
   const currentBoardTasks = boardStore.get()[task.status];
-  const prevBoardTasks = boardStore.get()[task.oldStatus];
+  const prevBoardTasks = boardStore.get()[task.oldStatus!];
   if (task.oldStatus === task.status) {
-    const updatedTasks = currentBoardTasks.map((obj: any) => {
+    const updatedTasks = currentBoardTasks.map((obj: TasksType) => {
       if (obj.id === task.id) {
         return {
           ...task
@@ -153,7 +168,7 @@ export const updateTaskStatus = ({
   }
 
   boardStore.setKey(task.status, [...currentBoardTasks, task]);
-  boardStore.setKey(task.oldStatus, [
-    ...prevBoardTasks.filter((obj: any) => obj.id != task.id),
+  boardStore.setKey(task.oldStatus!, [
+    ...prevBoardTasks.filter((obj: TasksType) => obj.id != task.id),
   ]);
 };

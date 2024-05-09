@@ -1,6 +1,4 @@
-import pytest
-from unittest.mock import Mock
-from src.settings.database import create_database, get_db, engine, SessionLocal
+from src.settings.database import create_database, get_db, engine
 
 
 def test_create_database():

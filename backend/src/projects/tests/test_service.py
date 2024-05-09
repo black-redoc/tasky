@@ -39,7 +39,9 @@ def run_around_tests():
     try:
         os.remove("test.db")
     except:
-        pass
+        """
+        Do nothing
+        """
 
 
 def test_get_projects(mock_db_session):
@@ -48,13 +50,8 @@ def test_get_projects(mock_db_session):
 
 
 def test_get_project_by_title(mock_db_session):
-    projects = service.get_project_by_title(mock_db_session, title="title")
-    assert projects is None
-
-
-def test_get_project_by_title(mock_db_session):
-    projects = service.get_project_by_title(mock_db_session, title="title")
-    assert projects is None
+    projects = service.get_project_by_title(mock_db_session, title="title1")
+    assert projects is not None
 
 
 def test_create_project(mock_db_session):

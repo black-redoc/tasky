@@ -7,7 +7,9 @@ export default ({
   isProject,
 }: {
   title: string;
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   onCancel: any;
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   onSure: any;
   isProject?: boolean;
 }) => {

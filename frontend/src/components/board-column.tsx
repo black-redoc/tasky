@@ -13,6 +13,7 @@ import {
   onChangeTaskTitle,
   setTaskHover,
   deleteTask as deleteTaskStore,
+  type TasksType,
 } from "../store/board.store";
 import { useStore } from "@nanostores/react";
 
@@ -20,7 +21,7 @@ import DeleteConfirmation from "./delete-confirmation";
 import { setToastMessage } from "../store/toast.store";
 import Toast from "./toast";
 
-export default ({
+const BoardColumn = ({
   boardName,
   projectId,
 }: {
@@ -28,13 +29,13 @@ export default ({
   projectId: number;
 }) => {
   const $boardStore = useStore(boardStore);
-  const tasks: any = useCallback(
+  const tasks = useCallback(
     () => getTasksBoard({ status: boardName.toLowerCase() }),
     [$boardStore]
   );
 
   const [isCreatingTask, setIsCreatingTask] = useState(false);
-  const [deletingTask, setDeletingTask] = useState({} as any);
+  const [deletingTask, setDeletingTask] = useState({} as TasksType);
   const [currentTask, setCurrentTask] = useState({
     title: "",
     description: "",
@@ -43,7 +44,7 @@ export default ({
     project_id: projectId,
     oldStatus: boardName,
     status: "",
-  });
+  } as TasksType);
 
   const [taskFormActive, setTaskFormActive] = useState(false);
   const addNewTask = () => {
@@ -112,11 +113,11 @@ export default ({
     }
     setToastMessage({ message: "Deleted task" });
     deleteTaskStore({ ...deletingTask });
-    setDeletingTask({});
+    setDeletingTask({} as TasksType);
   };
 
   const onCancelDelete = () => {
-    setDeletingTask({});
+    setDeletingTask({} as TasksType);
   };
 
   useEffect(() => {
@@ -168,7 +169,7 @@ export default ({
           </svg>
         </h1>
         <section className="overflow-y-auto max-h-[30rem] scroll-smooth focus:scroll-auto min-w-[15rem]">
-          {tasks().map((item: any, i: number) =>
+          {tasks()?.map((item: TasksType, i: number) =>
             !item.edit ? (
               <li
                 onMouseOver={() =>
@@ -216,7 +217,7 @@ export default ({
                         ),
                         status: item.status,
                         id: item.id,
-                      })
+                      } as TasksType)
                     }
                   >
                     <svg
@@ -304,3 +305,5 @@ export default ({
     </>
   );
 };
+
+export default BoardColumn;

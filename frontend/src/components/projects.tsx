@@ -1,15 +1,18 @@
 import Card from "./card";
 import { getProjects } from "../services/projects.service";
-import { type Project } from "../types/projects";
 import { setToastMessage } from "../store/toast.store";
-import { updateProjectsStore, projectsStore } from "../store/project.store";
+import {
+  updateProjectsStore,
+  projectsStore,
+  type ProjectType,
+} from "../store/project.store";
 import { useEffect } from "react";
 import { useStore } from "@nanostores/react";
 
 export default () => {
   const $projects = useStore(projectsStore);
   useEffect(() => {
-    getProjects().then((projects: Project[] | string) => {
+    getProjects().then((projects: ProjectType[] | string) => {
       if (typeof projects == "string") {
         setToastMessage({ message: projects, isError: true });
       } else {
@@ -22,7 +25,7 @@ export default () => {
     <>
       {Object.values($projects).length ? (
         Object.values($projects).map(
-          ({ title, description, id }: any, idx: number) => (
+          ({ title, description, id }: ProjectType, idx: number) => (
             <Card title={title} description={description} id={id} key={idx} />
           )
         )

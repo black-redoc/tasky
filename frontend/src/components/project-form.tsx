@@ -4,6 +4,7 @@ import {
   editingProjectStore,
   updateProjectsStore,
   setEditingProjectStore,
+  type ProjectType,
 } from "../store/project.store";
 import { useStore } from "@nanostores/react";
 import Button from "./button";
@@ -18,7 +19,7 @@ import Toast from "./toast";
 export default () => {
   const $editingProjectStore = useStore(editingProjectStore);
   const $isProjectFormActive = useStore(isProjectFormActive);
-  const [project, setProject] = useState({} as any);
+  const [project, setProject] = useState({} as ProjectType);
   useEffect(() => {
     setProject({ ...$editingProjectStore });
   }, [$editingProjectStore]);
@@ -53,6 +54,7 @@ export default () => {
     setToastMessage({ message: "Project created successfully!" });
     setIsProjectFormActive({ projectFormActive: false });
   };
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const onSave = async (e: any) => {
     e.preventDefault();
     if (Object.values($editingProjectStore).length) {
@@ -62,14 +64,15 @@ export default () => {
 
     await saveProject();
   };
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const onCancel = (e: any) => {
     e.preventDefault();
     setIsProjectFormActive({ projectFormActive: false });
-    setEditingProjectStore({});
+    setEditingProjectStore({ project: {} as ProjectType });
   };
 
-  const onChangeProject = (projectValue: any) => {
-    setProject((state: any) => ({ ...state, ...projectValue }));
+  const onChangeProject = (projectValue: ProjectType) => {
+    setProject((state: ProjectType) => ({ ...state, ...projectValue }));
   };
 
   const submitMessage = () => {
@@ -100,7 +103,9 @@ export default () => {
                     className="w-full text-gray-600 font-normal focus:ring-cyan-600 ring-inset rounded-md block border-0 ring-1 focus:ring-2 focus:ring-inset leading-6 focus:border-none appearance-none outline-none px-2 py-1 mt-2"
                     defaultValue={project.title}
                     onChange={(event) =>
-                      onChangeProject({ title: event.target.value })
+                      onChangeProject({
+                        title: event.target.value,
+                      } as ProjectType)
                     }
                   />
                 </div>
@@ -112,7 +117,9 @@ export default () => {
                     name="description"
                     className="w-full text-gray-600 font-normal focus:ring-cyan-600 ring-inset rounded-md block border-0 ring-1 focus:ring-2 focus:ring-inset leading-6 focus:border-none appearance-none outline-none px-2 py-1 mt-2"
                     onChange={(event) =>
-                      onChangeProject({ description: event.target.value })
+                      onChangeProject({
+                        description: event.target.value,
+                      } as ProjectType)
                     }
                   />
                 </div>

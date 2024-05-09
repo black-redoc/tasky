@@ -39,7 +39,9 @@ def run_around_tests():
     try:
         os.remove("test.db")
     except:
-        pass
+        """
+        Do nothing
+        """
 
 
 def test_get_tasks(mock_db_session):
