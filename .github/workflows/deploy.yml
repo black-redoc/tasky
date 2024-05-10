@@ -1,0 +1,25 @@
+name: Deploy app
+
+on:
+  push:
+    branches: ["master"]
+jobs:
+  deployment-dev:
+    environment: dev
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: printer
+        env:
+          VALUE: ${{ secrets.VALUE }}
+        run: echo "VALUE = $VALUE"
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITAL_TOKEN }}
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.KEY_AGENT }}
+      - name: Deploy digitalocean
+        run: ./deploy.sh

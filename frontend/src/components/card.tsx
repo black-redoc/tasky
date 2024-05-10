@@ -3,6 +3,7 @@ import DeleteProjectBtn from "./delete-project-btn";
 import {
   setIsProjectFormActive,
   setEditingProjectStore,
+  type ProjectType,
 } from "../store/project.store";
 import ProjectForm from "./project-form";
 
@@ -17,7 +18,9 @@ export default ({
 }) => {
   const openEditProjectForm = () => {
     setIsProjectFormActive({ projectFormActive: true });
-    setEditingProjectStore({ title, description, id });
+    setEditingProjectStore({
+      project: { title, description, id } as ProjectType,
+    });
   };
   return (
     <>

@@ -1,5 +1,5 @@
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-export const groupBy = ({ arr, criteria }: { arr: any[], criteria: (value: string) => string | any }) => {
+export const groupBy = ({ arr, criteria }: { arr: any[], criteria: any }) => {
   if (arr?.length == 0) {
     return {}
   }
