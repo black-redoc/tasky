@@ -6,7 +6,7 @@ on:
 jobs:
   deployment-dev:
     environment: dev
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
         with:
