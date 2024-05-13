@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 doctl compute ssh treyo --ssh-user app --ssh-command \
 '
-rm -rf treyo
-git clone https://github.com/black-redoc/treyo.git
-cd ~/treyo/frontend
+cd frontend
 pnpm i
 pnpm build
-cd ~/treyo/backend
+cd ..
+rm -rf venv
 virtualenv venv
 source venv/bin/activate
+cd backend
 pip install -re requirements.txt
-cd ~/treyo
+cd ..
 ./start.sh
 '
