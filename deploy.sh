@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-doctl compute ssh treyo --ssh-user app --ssh-command \
-'
+
 cd frontend
 pnpm i
 pnpm build
@@ -12,4 +11,3 @@ cd backend
 pip install -re requirements.txt
 cd ..
 ./start.sh
-'
