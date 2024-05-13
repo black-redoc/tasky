@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "start": "HOST=143.198.237.241 PORT=80 node ./run-astro.mjs"
+    "start": "HOST=143.198.237.241 PORT=8080 node ./run-astro.mjs"
   },
   "dependencies": {
     "express": "^4.19.2"

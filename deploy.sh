@@ -8,6 +8,6 @@ rm -rf venv
 virtualenv venv
 source venv/bin/activate
 cd backend
-pip install -re requirements.txt
+pip install -r requirements.txt
 cd ..
 ./start.sh
