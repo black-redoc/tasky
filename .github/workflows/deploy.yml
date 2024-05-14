@@ -13,3 +13,5 @@ jobs:
           fetch-depth: 0
       - name: Deploy digitalocean
         run: ./deploy.sh
+      - name: Restart daemon
+        run: sudo systemctl daemon-reload
