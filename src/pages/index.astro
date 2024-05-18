@@ -1,0 +1,14 @@
+---
+import Layout from "../layouts/layout.astro";
+import ProjectForm from "../components/project-form"
+import Projects from "../components/projects";
+
+export const prerender = false;
+---
+
+<Layout title="Treyo">
+  <ProjectForm client:only />
+  <div class="flex gap-4 flex-wrap">
+    <Projects client:only />
+  </div>
+</Layout>
