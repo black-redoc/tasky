@@ -4,13 +4,14 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "start": "npm install && npm build && npm i express && node ./run-astro.mjs",
+    "start": "node ./run-astro.mjs",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "eslint": "eslint './**/*.{js,jsx,ts,tsx,astro}' --fix"
   },
   "dependencies": {
+    "express": "^4.19.2",
     "@astrojs/check": "^0.5.10",
     "@astrojs/node": "^8.2.5",
     "@astrojs/react": "^3.1.0",
