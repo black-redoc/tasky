@@ -78,6 +78,15 @@ const BoardColumn = ({
       status: status.toLowerCase(),
     });
     setIsCreatingTask(false);
+    updateLastTaskCreated({
+      task: {
+        title: response.title,
+        project_id: projectId,
+        status: status.toLowerCase(),
+        id: response.id,
+        description: response.description,
+      },
+    });
     if (Object.keys(response).includes("error")) {
       setToastMessage({ message: response, isError: true });
       return;

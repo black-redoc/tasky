@@ -114,6 +114,9 @@ export const getTasksBoard = ({ status }: { status: string }) => {
 export const updateLastTaskCreated = ({
   task
 }: { task: TasksType }) => {
+  if (!task) {
+    return;
+  }
   const { status } = task
   const boardTasks = boardStore.get()[status];
 
@@ -121,7 +124,7 @@ export const updateLastTaskCreated = ({
     return;
   }
 
-  const rest = boardTasks.slice(0, boardTasks.length - 1);
+  const rest = boardTasks.filter((task) => task.id != 0)//.slice(0, boardTasks.length - 1);
   boardStore.setKey(status, [
     ...rest,
     {
