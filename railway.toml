@@ -2,7 +2,13 @@
 cmds = ["pnpm install -g pnpm", "pmpm install --frozen-lockfile"]
 
 [build]
+builder = "NIXPACKS"
 startCommand = "pnpm build"
 
 [deploy]
 startCommand = "pnpm start"
+healthcheckPath = "healthcheck"
+sleepApplication = false
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+numReplicas = 1
