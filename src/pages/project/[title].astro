@@ -26,7 +26,9 @@ const boards_per_status = groupBy({ arr: project.tasks, criteria: "status" });
     typeof project === "string" ? (
       <Toast />
     ) : (
+      <main class="justify-center items-center w-full flex">
       <Board boards={boards_per_status} projectId={project.id} client:only />
+      </main>
     )
   }
 </Layout>

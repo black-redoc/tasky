@@ -25,7 +25,11 @@ export default ({
   return (
     <>
       <ProjectForm />
-      <div className="rounded w-60 h-52 flex flex-col bg-sky-50">
+      <div
+        className={`
+        rounded w-60 h-52 flex flex-col bg-sky-50
+        `}
+      >
         <h1
           className={`
         rounded-t w-full bg-sky-800 text-white font-bold
