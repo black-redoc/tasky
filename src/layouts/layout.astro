@@ -12,16 +12,22 @@ const { title } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <ViewTransitions />
     <title>{title || "Astro"}</title>
   </head>
   <body>
-    <nav class="h-12 w-full bg-cyan-700 px-3 flex items-center justify-between">
-      <h1 class="text-white font-bold">Treyo</h1>
-      <Dropdown client:only url={Astro.url} />
+    <nav class="h-12 w-full bg-cyan-700 px-5 flex items-center justify-center">
+      <section class="flex justify-between w-[67rem]">
+        <aside class="items-center flex justify-start w-full">
+          <h1 class="text-white font-bold">Treyo</h1>
+        </aside>
+        <aside class="items-center justify-end flex w-full">
+          <Dropdown client:only url={Astro.url} />
+        </aside>
+      </section>
     </nav>
     <div class="my-3 mx-5">
       <slot />

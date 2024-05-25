@@ -6,7 +6,7 @@ import {
   projectsStore,
   type ProjectType,
 } from "../store/project.store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 
 export default () => {
@@ -21,17 +21,33 @@ export default () => {
     });
   }, []);
 
+  const [isMobile, setIsMobile] = useState(
+    navigator.userAgent.toLowerCase().includes("mobile")
+  );
+
+  useEffect(() => {
+    const handleResize = () =>
+      setIsMobile(navigator.userAgent.toLowerCase().includes("mobile"));
+    window.addEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
-      {Object.values($projects).length ? (
-        Object.values($projects).map(
-          ({ title, description, id }: ProjectType, idx: number) => (
-            <Card title={title} description={description} id={id} key={idx} />
+      <main
+        className={`flex items-center gap-5 flex-wrap
+          ${isMobile ? "justify-center" : "justify-start"}
+          `}
+      >
+        {Object.values($projects).length ? (
+          Object.values($projects).map(
+            ({ title, description, id }: ProjectType, idx: number) => (
+              <Card title={title} description={description} id={id} key={idx} />
+            )
           )
-        )
-      ) : (
-        <></>
-      )}
+        ) : (
+          <></>
+        )}
+      </main>
     </>
   );
 };
