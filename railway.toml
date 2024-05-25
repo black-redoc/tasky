@@ -1,0 +1,8 @@
+[install]
+cmds = ["pnpm install -g pnpm", "pmpm install --frozen-lockfile"]
+
+[build]
+startCommand = "pnpm build"
+
+[deploy]
+startCommand = "pnpm start"
