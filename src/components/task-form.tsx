@@ -5,6 +5,7 @@ import { updateTask } from "../services/tasks.service";
 import { updateTaskStatus, type TasksType } from "../store/board.store";
 import { setToastMessage } from "../store/toast.store";
 import Toast from "./toast";
+import { capitalize } from "../services/strings.service";
 
 export default ({
   setTaskFormActive,
@@ -177,7 +178,7 @@ export default ({
                 backgroundPosition: "right 0.75rem center",
                 backgroundSize: "1rem",
               }}
-              value={taskState.status}
+              defaultValue={capitalize({word: taskState.status})}
               onChange={(e) => {
                 setTaskState({ ...taskState, status: e.target.value });
               }}
