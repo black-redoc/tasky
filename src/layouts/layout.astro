@@ -1,6 +1,8 @@
 ---
 import Dropdown from "../components/dropdown";
 import { ViewTransitions } from "astro:transitions";
+import LinkedinIcon from "../components/icons/linkedin"
+import GithubIcon from "../components/icons/github"
 interface Props {
   title: string;
 }
@@ -22,8 +24,8 @@ const { title } = Astro.props;
     <ViewTransitions />
     <title>{title || "Astro"}</title>
   </head>
-  <body>
-    <nav class="h-12 w-full bg-cyan-700 px-5 flex items-center justify-center">
+  <body class="h-screen flex justify-between flex-col gap-4">
+    <nav class="h-12 w-full bg-cyan-700 px-5 flex items-center justify-center fixed top-0">
       <section class="flex justify-between w-[67rem]">
         <aside class="items-center flex justify-start w-full">
           <h1 class="text-white font-bold">Treyo</h1>
@@ -33,9 +35,20 @@ const { title } = Astro.props;
         </aside>
       </section>
     </nav>
-    <div class="my-3 mx-5">
+    <main class="mx-5 mt-16">
       <slot />
-    </div>
+    </main>
+    <section class="bg-sky-700 text-zinc-100 py-5 px-3 flex gap-5 flex-wrap items-center justify-center">
+      <p>Copyright © 2024 @black-redoc</p>
+      <aside class="flex flex-wrap gap-1">
+        <a href="https://www.linkedin.com/in/sebasb-dev/" target="_blank">
+          <LinkedinIcon />
+        </a>
+        <a href="https://github.com/black-redoc" target="_blank">
+          <GithubIcon />
+        </a>
+      </aside>
+    </section>
     <style is:global>
       .dropdown:hover .dropdown-content {
         display: block;
