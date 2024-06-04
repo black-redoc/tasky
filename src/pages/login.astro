@@ -1,0 +1,11 @@
+---
+import Layout from "../layouts/layout.astro";
+import LoginForm from "../components/login-form";
+
+---
+
+<Layout title="Treyo">
+  <main class="w-full items-center justify-center flex h-full">
+    <LoginForm client:only/>
+  </main>
+</Layout>
