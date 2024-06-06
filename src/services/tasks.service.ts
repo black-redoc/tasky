@@ -18,7 +18,7 @@ export const updateTask = async ({ ...task }) =>
     body: JSON.stringify(task),
   }).then((data) => data.json()).catch((error) => `Error: ${error.message}`);
 
-export const deleteTask = async ({ taskId }: { taskId: number }) =>
+export const deleteTask = async ({ taskId }: { taskId: number | string }) =>
   await fetch(`${BACKEND_URL}/tasks/${taskId}`, {
     method: "DELETE",
   }).then((data) => data.json()).catch((error) => `Error: ${error.message}`);

@@ -35,7 +35,7 @@ export const updateProject = async ({ ...project }) =>
     body: JSON.stringify(project),
   }).then((data) => data.status).catch((error) => `Error: ${error.message}`);
 
-export const deleteProject = async ({ id }: { id: number }) =>
+export const deleteProject = async ({ id }: { id: number | string }) =>
   await fetch(`${BACKEND_URL}/projects/${id}`, {
     method: "DELETE"
   }).then((data) => data.json()).catch(

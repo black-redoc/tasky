@@ -4,7 +4,7 @@ import { setToastMessage } from "../store/toast.store";
 import DeleteConfirmation from "./delete-confirmation";
 import { deleteProject as deleteProjectStore } from "../store/project.store";
 
-export default ({ id, title }: { id?: number; title?: string }) => {
+export default ({ id, title }: { id?: number | string; title?: string }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const deleteProject = async () => {
     if (!id) {

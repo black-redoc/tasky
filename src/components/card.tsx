@@ -14,7 +14,7 @@ export default ({
 }: {
   title: string;
   description: string | undefined;
-  id?: number;
+  id?: number | string;
 }) => {
   const openEditProjectForm = () => {
     setIsProjectFormActive({ projectFormActive: true });

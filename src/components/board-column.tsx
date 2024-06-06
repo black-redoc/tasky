@@ -99,11 +99,21 @@ const BoardColumn = ({
     });
   };
 
-  const taskMouseEnter = ({ id, status }: { id: number; status: string }) =>
-    setTaskHover({ id, status, hover: true });
+  const taskMouseEnter = ({
+    id,
+    status,
+  }: {
+    id: number | string;
+    status: string;
+  }) => setTaskHover({ id, status, hover: true });
 
-  const taskMouseOut = ({ id, status }: { id: number; status: string }) =>
-    setTaskHover({ id, status, hover: false });
+  const taskMouseOut = ({
+    id,
+    status,
+  }: {
+    id: number | string;
+    status: string;
+  }) => setTaskHover({ id, status, hover: false });
 
   const maxLettersPerTitle = ({ word }: { word: string }) => {
     return word.slice(0, 15) + `${word.length > 15 ? "..." : ""}`;

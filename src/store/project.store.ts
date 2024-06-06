@@ -1,7 +1,7 @@
 import { atom, map } from "nanostores";
 
 export type ProjectType = {
-  id: number;
+  id: number | string;
   title: string;
   description: string;
   tasks: {
@@ -12,14 +12,14 @@ export type ProjectType = {
 }
 
 export type ProjectStoreType = {
-  [id: number]: ProjectType
+  [id: number | string]: ProjectType
 }
 
 export const isProjectFormActive = atom(false);
 export const projectsStore = map({} as ProjectStoreType);
 export const editingProjectStore = map({} as ProjectType);
 
-export const deleteProject = ({ id }: { id: number }) => {
+export const deleteProject = ({ id }: { id: number | string }) => {
   const newProjects = {} as ProjectStoreType;
   const projects = projectsStore.get();
   for (const project of Object.values(projects)) {

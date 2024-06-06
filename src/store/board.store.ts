@@ -1,7 +1,7 @@
 import { map, atom } from "nanostores";
 
 export type TasksType = {
-  id: number;
+  id: number | string;
   title: string;
   status: string;
   description: string;
@@ -22,7 +22,7 @@ export const setProjectId = ({ projectId }: { projectId: number }) => {
   projectIdStore.set(projectId);
 };
 
-export const deleteTask = ({ id, status }: { id: number; status: string }) => {
+export const deleteTask = ({ id, status }: { id: number | string; status: string }) => {
   const tasks = boardStore.get()[status];
 
   if (!tasks) {
@@ -38,7 +38,7 @@ export const setTaskHover = ({
   status,
   hover,
 }: {
-  id: number;
+  id: number | string;
   status: string;
   hover: boolean;
 }) => {
@@ -78,7 +78,7 @@ export const onChangeTaskTitle = ({
 }: {
   status: string;
   taskTitle: string;
-  taskId: number;
+  taskId: number | string;
 }) => {
   const tasks = boardStore.get()[status];
 
