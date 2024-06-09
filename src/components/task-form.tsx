@@ -1,11 +1,14 @@
 import { useState } from "react";
 import Button from "./button";
 
-import { updateTask } from "../services/tasks.service";
-import { updateTaskStatus, type TasksType } from "../store/board.store";
+import { type TasksType } from "../store/board.store";
 import { setToastMessage } from "../store/toast.store";
 import Toast from "./toast";
 import { capitalize } from "../services/strings.service";
+import {
+  updateTask as updateTaskRepository,
+} from "../repositories/tasks.repository";
+import { isLoggedIn } from "../store/auth.store";
 
 export default ({
   setTaskFormActive,
@@ -60,23 +63,18 @@ export default ({
   };
 
   const saveForm = async ({ closeForm = true }: { closeForm: boolean }) => {
+    setTaskFormActive(false);
     setEditTitleMode(false);
     const updatedTask = {
       ...taskState,
       status: taskState.status.toLowerCase(),
     };
     delete updatedTask["edit"];
-    const response = await updateTask({ ...updatedTask });
-    if (typeof response === "string") {
-      setToastMessage({ message: response, isError: true });
-    }
-    updateTaskStatus({
-      task: { ...updatedTask },
-    });
+    const message = await updateTaskRepository({isAuth: isLoggedIn(), task: updatedTask as TasksType})
+    setToastMessage(message)
     if (closeForm) {
       setToastMessage({ message: `${task.id ? "Updated" : "Saved"} task` });
       setCurrentTask({ ...updatedTask });
-      setTaskFormActive(false);
     }
   };
   return (
@@ -178,7 +176,7 @@ export default ({
                 backgroundPosition: "right 0.75rem center",
                 backgroundSize: "1rem",
               }}
-              defaultValue={capitalize({word: taskState.status})}
+              defaultValue={capitalize({ word: taskState.status })}
               onChange={(e) => {
                 setTaskState({ ...taskState, status: e.target.value });
               }}

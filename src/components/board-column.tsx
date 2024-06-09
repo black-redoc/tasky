@@ -2,17 +2,11 @@ import { useState, useCallback, useEffect } from "react";
 import Button from "./button";
 import TaskForm from "./task-form";
 import {
-  createTask,
-  deleteTask as deleteTaskService,
-} from "../services/tasks.service";
-import {
   getTasksBoard,
   addTask,
-  updateLastTaskCreated,
   boardStore,
   onChangeTaskTitle,
   setTaskHover,
-  deleteTask as deleteTaskStore,
   type TasksType,
 } from "../store/board.store";
 import { useStore } from "@nanostores/react";
@@ -20,6 +14,11 @@ import { useStore } from "@nanostores/react";
 import DeleteConfirmation from "./delete-confirmation";
 import { setToastMessage } from "../store/toast.store";
 import Toast from "./toast";
+import { isLoggedIn } from "../store/auth.store";
+import {
+  createTask as createTaskRepository,
+  deleteTask,
+} from "../repositories/tasks.repository";
 
 const BoardColumn = ({
   boardName,
@@ -72,31 +71,17 @@ const BoardColumn = ({
     title: string;
     status: string;
   }) => {
-    const response = await createTask({
-      title,
-      project_id: projectId,
-      status: status.toLowerCase(),
-    });
     setIsCreatingTask(false);
-    updateLastTaskCreated({
+    const message = await createTaskRepository({
+      isAuth: isLoggedIn(),
       task: {
-        title: response.title,
+        title,
         project_id: projectId,
         status: status.toLowerCase(),
-        id: response.id,
-        description: response.description,
-      },
+      } as TasksType,
+      projectId,
     });
-    if (Object.keys(response).includes("error")) {
-      setToastMessage({ message: response, isError: true });
-      return;
-    }
-    updateLastTaskCreated({
-      ...response,
-    });
-    setToastMessage({
-      message: `${currentTask.id !== 0 ? "Updated" : "Saved"} task`,
-    });
+    setToastMessage(message);
   };
 
   const taskMouseEnter = ({
@@ -124,14 +109,11 @@ const BoardColumn = ({
   );
 
   const onSureDelete = async () => {
-    const response = await deleteTaskService({ taskId: deletingTask.id });
-
-    if (Object.keys(response).includes("error")) {
-      setToastMessage({ message: response, isError: true });
-      return;
-    }
-    setToastMessage({ message: "Deleted task" });
-    deleteTaskStore({ ...deletingTask });
+    const message = await deleteTask({
+      isAuth: isLoggedIn(),
+      task: deletingTask,
+    });
+    setToastMessage(message);
     setDeletingTask({} as TasksType);
   };
 

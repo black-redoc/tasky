@@ -2,19 +2,19 @@ import {
   isProjectFormActive,
   setIsProjectFormActive,
   editingProjectStore,
-  updateProjectsStore,
   setEditingProjectStore,
   type ProjectType,
 } from "../store/project.store";
 import { useStore } from "@nanostores/react";
 import Button from "./button";
-import {
-  createProject,
-  updateProject as updateProjectService,
-} from "../services/projects.service";
 import { useEffect, useState } from "react";
 import { setToastMessage } from "../store/toast.store";
 import Toast from "./toast";
+import { isLoggedIn } from "../store/auth.store";
+import {
+  createProject,
+  updateProject as updateProjectRepository,
+} from "../repositories/projects.repository";
 
 export default () => {
   const $editingProjectStore = useStore(editingProjectStore);
@@ -25,34 +25,23 @@ export default () => {
   }, [$editingProjectStore]);
 
   const updateProject = async () => {
-    const response = await updateProjectService({ ...project });
-    if (typeof response == "string") {
-      setToastMessage({ message: response, isError: true });
-      return;
-    }
-
     setIsProjectFormActive({ projectFormActive: false });
-    updateProjectsStore({ projects: [project] });
-    setToastMessage({
-      message: `Updated project ${project.title} successfully!`,
+    const message = await updateProjectRepository({
+      isAuth: isLoggedIn(),
+      project: project,
     });
+    setToastMessage(message);
   };
   const saveProject = async () => {
-    const response = await createProject({
-      title: project.title,
-      description: project.description,
-    });
-
-    if (typeof response === "string") {
-      setToastMessage({
-        message: "Error while creating project",
-        isError: true,
-      });
-      return;
-    }
-    updateProjectsStore({ projects: [response] });
-    setToastMessage({ message: "Project created successfully!" });
     setIsProjectFormActive({ projectFormActive: false });
+    const message = await createProject({
+      isAuth: isLoggedIn(),
+      project: {
+        title: project.title,
+        description: project.description,
+      } as ProjectType,
+    });
+    setToastMessage(message);
   };
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const onSave = async (e: any) => {

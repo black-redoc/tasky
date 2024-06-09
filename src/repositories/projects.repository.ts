@@ -44,6 +44,7 @@ export const createProject = async ({
   project: ProjectType;
 }) => {
   // Create project in backend
+  console.log({isAuth})
   if (isAuth) {
     const response = await createProjectService(project);
     if (typeof response === "string") {

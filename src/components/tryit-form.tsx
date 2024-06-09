@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import {
-  validateUsername,
-} from "../services/auth.service";
+import { validateUsername } from "../services/auth.service";
 import { initUser } from "../store/auth.store";
 
 export default () => {
@@ -25,12 +23,12 @@ export default () => {
     }
     setInputHint("");
     const result = await validateUsername({ username: inputValue });
-    if (!result.is_user_valid) {
-      initUser({username: inputValue,})
-      window.location.replace("/")
+    if (!result) {
+      initUser({ username: inputValue });
+      window.location.replace("/");
       return;
     }
-    window.location.replace("/login")
+    window.location.replace("/login");
   };
 
   const onChangeInputValue = ({ target }: { target: HTMLInputElement }) => {
