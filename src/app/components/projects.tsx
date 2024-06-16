@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Card from "./card";
 import { useContext, useEffect, useState } from "react";
 import { getProjects } from "../repositories/projects.repository";
@@ -22,9 +22,12 @@ export default function Projects() {
     });
   }, []);
 
-  const [isMobile, setIsMobile] = useState(
-    navigator.userAgent.toLowerCase().includes("mobile")
-  );
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof navigator !== "undefined") {
+      return navigator.userAgent.toLowerCase().includes("mobile");
+    }
+    return false;
+  });
 
   useEffect(() => {
     const handleResize = () =>

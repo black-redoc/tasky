@@ -1,4 +1,3 @@
-// import Image from "next/image";
 "use client";
 import React, { useContext, useEffect, memo, useRef } from "react";
 import ProjectForm from "./components/project-form";
