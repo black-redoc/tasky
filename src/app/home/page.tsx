@@ -15,9 +15,9 @@ export default function Home() {
           </h1>
           <Image
             className="object-cover w-[25rem] sm:w-[30rem] md:w-[40rem] xl:w-[4arem]"
-            src="/treyo_img.webp"
+            src="/treyo_banner.png"
             alt="tasky img"
-            width={200}
+            width={500}
             height={200}
           />
         </aside>
