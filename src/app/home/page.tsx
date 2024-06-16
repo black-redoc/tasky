@@ -35,9 +35,9 @@ export default function Home() {
           <article
             className={`
             object-cover
-            md:h-[22.5rem] lg:h-[22.5rem] xl:h-[22.5rem] sm:h-[15rem] h-[11.2rem]
-            w-[23rem] sm:w-[30rem] md:w-[40rem] xl:w-[4arem]
-            sm:mb-5
+            md:h-[20.5rem] lg:h-[20.5rem] xl:h-[20.5rem] sm:h-[15rem] h-[11.2rem]
+            w-[23rem] sm:w-[30rem] md:w-[40rem] xl:w-[40rem]
+            flex justify-center items-center
             px-7
             `}
           >
