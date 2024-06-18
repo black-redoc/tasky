@@ -1,4 +1,3 @@
-// const BACKEND_URL = 'http://localhost:8000'//import.meta.env.PUBLIC_BACKEND_URL;
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 export const createTask = async ({ ...task }) =>
