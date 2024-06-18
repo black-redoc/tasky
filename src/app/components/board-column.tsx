@@ -137,6 +137,7 @@ const BoardColumn = ({
       isAuth: isLoggedIn(),
       task: deletingTask,
       taskDispatch,
+      projectDispatch,
     });
     toastDispatch({
       type: "ON_MESSAGE",

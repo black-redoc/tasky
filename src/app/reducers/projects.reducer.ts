@@ -67,6 +67,17 @@ export default function projectsReducer(state: ProjectStateType, action: ActionS
         } : project
       )
     }
+  } else if (action.type === 'DELETE_TASK') {
+    const task = payload.tasks[0]
+    return {
+      ...state,
+      projects: state.projects.map(project =>
+        project.id === task.project_id ? {
+          ...project,
+          tasks: project.tasks.filter(t => t.id !== task.id)
+        } : project
+      )
+    }
   }
   return state
 }

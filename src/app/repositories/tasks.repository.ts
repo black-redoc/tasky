@@ -1,4 +1,3 @@
-// import { updateLastTaskCreated, updateTaskStatus, deleteTask as deleteTaskStore, type TasksType, boardStore } from "../store/board.store";
 import { ActionState, TaskType } from "../reducers/tasks.reducer";
 import { ActionState as ProjectActionState, ProjectType } from "../reducers/projects.reducer"
 import {
@@ -27,7 +26,7 @@ export const createTask = async ({
   if (isAuth) {
     const response = await createTaskService({ task });
     if (Object.keys(response).includes("error")) {
-      return { message: response, isError: true };
+      return { message: response.error, isError: true };
     }
     id = response.id
   }
@@ -74,7 +73,7 @@ export const updateTask = async ({
   if (isAuth) {
     const response = await updateTaskService({ task });
     if (Object.keys(response).includes("error")) {
-      return { message: response, isError: true };
+      return { message: response.error, isError: true };
     }
   }
   // Update task in client
@@ -98,16 +97,18 @@ export const deleteTask = async ({
   isAuth,
   task,
   taskDispatch,
+  projectDispatch
 }: {
   isAuth: boolean;
   task: TaskType;
-  taskDispatch: (action: ActionState) => void
+  taskDispatch: (action: ActionState) => void,
+  projectDispatch: (action: ProjectActionState) => void
 }) => {
   // Delete task in backend
   if (isAuth) {
     const response = await deleteTaskService({ taskId: task.id });
     if (Object.keys(response).includes("error")) {
-      return { message: response, isError: true };
+      return { message: response.error, isError: true };
     }
   }
   // Delete task in client
@@ -116,6 +117,17 @@ export const deleteTask = async ({
     payload: {
       task
     }
+  })
+  projectDispatch({
+    type: 'DELETE_TASK',
+    payload: {
+      id: task.project_id,
+      tasks: [
+        {
+          id: task.id,
+        }
+      ]
+    } as ProjectType
   })
   return { message: "Deleted task" }
 };
