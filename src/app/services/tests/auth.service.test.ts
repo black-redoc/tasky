@@ -10,7 +10,7 @@ describe("auth.service", () => {
 
   afterEach(() => {
     // restoring date after each test run
-    vi.useRealTimers();
+    vi.resetAllMocks();
   });
 
   it("should login", async () => {

@@ -1,14 +1,5 @@
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
-export const getProjectByTitle = async ({ title }: { title: string }) => await fetch(
-  `${BACKEND_URL}/projects/${title}/`,
-  {
-    headers: {
-      "content-type": "application/json"
-    }
-  }
-).then((data) => data.json()).catch((error) => `Error: ${error.message}`)
-
 export const getProjects = async () =>
   await fetch(`${BACKEND_URL}/projects/`, {
     headers: {
