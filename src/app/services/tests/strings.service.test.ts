@@ -1,4 +1,4 @@
-import { vi, it, describe, expect } from "vitest";
+import { it, describe, expect } from "vitest";
 import { capitalize } from "../strings.service";
 
 describe("Strings service test", () => {

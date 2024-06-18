@@ -1,5 +1,4 @@
-const BACKEND_URL = 'http://localhost:8000'//import.meta.env.PUBLIC_BACKEND_URL;
-
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 export const getProjectByTitle = async ({ title }: { title: string }) => await fetch(
   `${BACKEND_URL}/projects/${title}/`,
