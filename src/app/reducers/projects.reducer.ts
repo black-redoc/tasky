@@ -1,138 +1,156 @@
 import { TaskType } from "./tasks.reducer";
 
 export const initialState = {
-  projects: [] as ProjectType[]
-}
+  projects: [] as ProjectType[],
+};
 
 export type ProjectType = {
   id: string | number;
   title: string;
   description: string;
-  tasks: TaskType[]
-}
+  tasks: TaskType[];
+};
 
 export type ActionState = {
   type: string;
   payload: ProjectType | ProjectType[];
-}
+};
 
 export type ProjectStateType = {
-  projects: ProjectType[]
-}
+  projects: ProjectType[];
+};
 
-export default function projectsReducer(state: ProjectStateType, action: ActionState): ProjectStateType {
-  if (action.type === 'ADD_ALL') {
+export default function projectsReducer(
+  state: ProjectStateType,
+  action: ActionState
+): ProjectStateType {
+  const projects: ProjectType[] = action.payload as ProjectType[];
+  if (action.type === "ADD_ALL") {
     return {
       ...state,
-      ...action.payload
-    }
+      projects: [...projects],
+    };
   }
-  const payload = action.payload as ProjectType
-  if (action.type === 'CREATE_PROJECT') {
+  const payload = action.payload as ProjectType;
+  if (action.type === "CREATE_PROJECT") {
     return {
       ...state,
-      projects: [...state.projects, { ...payload, tasks: [] as TaskType[] }]
-    }
-  } else if (action.type === 'UPDATE_PROJECT') {
+      projects: [...state.projects, { ...payload, tasks: [] as TaskType[] }],
+    };
+  } else if (action.type === "UPDATE_PROJECT") {
     return {
       ...state,
-      projects: state.projects.map(project =>
+      projects: state.projects.map((project) =>
         project.id === payload.id ? payload : project
-      )
-    }
-  } else if (action.type === 'DELETE_PROJECT') {
+      ),
+    };
+  } else if (action.type === "DELETE_PROJECT") {
     return {
       ...state,
-      projects: state.projects.filter(project => project.id !== payload.id)
-    }
-  } else if (action.type === 'ADD_TASK') {
-    const task = payload.tasks[0]
+      projects: state.projects.filter((project) => project.id !== payload.id),
+    };
+  } else if (action.type === "ADD_TASK") {
+    const task = payload.tasks[0];
     return {
       ...state,
-      projects: state.projects.map(project =>
-        project.id === task.project_id ? {
-          ...project,
-          tasks: [...project.tasks, task]
-        } : project
-      )
-    }
-  } else if (action.type === 'UPDATE_TASK') {
-    const task = payload.tasks[0]
+      projects: state.projects.map((project) =>
+        project.id === task.project_id
+          ? {
+              ...project,
+              tasks: [...project.tasks, task],
+            }
+          : project
+      ),
+    };
+  } else if (action.type === "UPDATE_TASK") {
+    const task = payload.tasks[0];
     return {
       ...state,
-      projects: state.projects.map(project =>
-        project.id === task.project_id ? {
-          ...project,
-          tasks: project.tasks.map(t => t.id === task.id ? task : t)
-        } : project
-      )
-    }
-  } else if (action.type === 'DELETE_TASK') {
-    const task = payload.tasks[0]
+      projects: state.projects.map((project) =>
+        project.id === task.project_id
+          ? {
+              ...project,
+              tasks: project.tasks.map((t) => (t.id === task.id ? task : t)),
+            }
+          : project
+      ),
+    };
+  } else if (action.type === "DELETE_TASK") {
+    const task = payload.tasks[0];
     return {
       ...state,
-      projects: state.projects.map(project =>
-        project.id === task.project_id ? {
-          ...project,
-          tasks: project.tasks.filter(t => t.id !== task.id)
-        } : project
-      )
-    }
+      projects: state.projects.map((project) =>
+        project.id === task.project_id
+          ? {
+              ...project,
+              tasks: project.tasks.filter((t) => t.id !== task.id),
+            }
+          : project
+      ),
+    };
   }
-  return state
+  return state;
 }
 
 export const initialProjectFormState = {
-  isOpen: false
-}
+  isOpen: false,
+};
 
 export type ActionProjectFormState = {
   type: string;
-}
+};
 
 export type ProjectFormState = {
-  isOpen: boolean
-}
+  isOpen: boolean;
+};
 
-export function projectFormReducer(state: ProjectFormState, action: ActionProjectFormState) {
-  if (action.type === 'CLOSE_FORM') {
+export function projectFormReducer(
+  state: ProjectFormState,
+  action: ActionProjectFormState
+) {
+  if (action.type === "CLOSE_FORM") {
     return {
-      ...state, isOpen: false
-    }
-  } else if (action.type === 'OPEN_FORM') {
+      ...state,
+      isOpen: false,
+    };
+  } else if (action.type === "OPEN_FORM") {
     return {
-      ...state, isOpen: true
-    }
+      ...state,
+      isOpen: true,
+    };
   }
-  return state
+  return state;
 }
 
 export const initialEditingProjectState = {
-  project: {} as ProjectType
-}
+  project: {} as ProjectType,
+};
 
 export type EditingProjectState = {
   project: ProjectType;
-}
+};
 
 export type ActionEditingProjectState = {
   type: string;
   payload: {
     project: ProjectType;
-  }
-}
+  };
+};
 
-export function editingProjectReducer(state: EditingProjectState, action: ActionEditingProjectState) {
-  if (action.type === 'SET_EDITING_PROJECT') {
+export function editingProjectReducer(
+  state: EditingProjectState,
+  action: ActionEditingProjectState
+) {
+  if (action.type === "SET_EDITING_PROJECT") {
     return {
       ...state,
-      project: action.payload.project
-    }
-  } else if (action.type === 'UNSET_EDITING_PROJECT') {
+      project: action.payload.project,
+    };
+  } else if (action.type === "UNSET_EDITING_PROJECT") {
     return {
       ...state,
-      project: {} as ProjectType
-    }
+      project: {} as ProjectType,
+    };
   }
-  return state
+  return state;
 }
