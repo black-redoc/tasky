@@ -1,11 +1,11 @@
 import React from "react";
-import { describe, it, expect, afterEach } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { describe, it, afterEach } from "vitest";
+import { cleanup, render, } from "@testing-library/react";
 import ProjectTitle from "../[title]/page";
 import { StateProvider } from "../../providers/state_provider";
 
 
-describe("Page", () => {
+describe("Project [title] page", () => {
   afterEach(cleanup);
   it("should render the page", () => {
     render(
