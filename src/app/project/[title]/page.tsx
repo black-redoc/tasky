@@ -1,9 +1,9 @@
 "use client";
-import Board from "@/app/components/board";
-import Toast from "@/app/components/toast";
-import { StateContext } from "@/app/contexts/states";
-import { TaskStateType } from "@/app/reducers/tasks.reducer";
-import { getProjectByTitle } from "@/app/repositories/projects.repository";
+import Board from "../../components/board";
+import Toast from "../../components/toast";
+import { StateContext } from "../../contexts/states";
+import { TaskStateType } from "../../reducers/tasks.reducer";
+import { getProjectByTitle } from "../../repositories/projects.repository";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
