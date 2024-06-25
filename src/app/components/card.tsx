@@ -59,8 +59,9 @@ export default function Card({
           )}
 
           <aside className="flex flex-col w-full mb-2">
-            <Link onClick={redirectToProjectByTitle} content="Show more" />
+            <Link role="show-more" onClick={redirectToProjectByTitle} content="Show more" />
             <Link
+              role="edit"
               className="bg-cyan-600"
               isSecondary
               content="Edit"
