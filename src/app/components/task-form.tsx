@@ -112,6 +112,7 @@ export default function TaskForm({
         <section className="h-[31rem] w-[20rem] bg-sky-100 mx-auto rounded py-3 px-4">
           <div className="flex flex-row justify-end w-full">
             <span
+              data-testid="set-task-form-active"
               onClick={() => setTaskFormActive(false)}
               className="cursor-pointer"
             >
@@ -136,6 +137,7 @@ export default function TaskForm({
           <div className="mt-5 flex flex-row justify-between w-full">
             {editTitleMode ? (
               <input
+                data-testid="title-input"
                 defaultValue={taskState.title.split(":")[1]}
                 name="title"
                 className="w-full text-gray-600 font-normal focus:ring-cyan-600 ring-inset rounded-md block border-0 ring-1 focus:ring-2 focus:ring-inset leading-6 focus:border-none appearance-none outline-none px-2 py-1"
@@ -151,6 +153,7 @@ export default function TaskForm({
             )}
             {!editTitleMode ? (
               <span
+                data-testid="set-edit-title-mode"
                 onClick={() => setEditTitleMode(!editTitleMode)}
                 className="cursor-pointer h-[2rem] flex items-center justify-center"
               >
@@ -174,6 +177,7 @@ export default function TaskForm({
               </span>
             ) : (
               <span
+                data-testid="save-form-span"
                 onClick={() => saveForm({ closeForm: false })}
                 className="cursor-pointer h-[2rem] flex items-center justify-center"
               >
@@ -198,7 +202,13 @@ export default function TaskForm({
           </div>
           <div className="flex flex-col gap-5 my-4">
             <select
-              className="py-2 px-2 outline-none focus:ring-cyan-600 ring-inset rounded-md block ring-1 focus:ring-2 focus:ring-inset focus:border-none appearance-none border-gray-800 shadow leading-tight focus:outline-none focus:shadow-outline"
+              data-testid="status-select"
+              className={`
+                py-2 px-2 outline-none focus:ring-cyan-600 ring-inset rounded-md
+                block ring-1 focus:ring-2 focus:ring-inset focus:border-none
+                appearance-none border-gray-800 shadow leading-tight
+                focus:outline-none focus:shadow-outline
+                `}
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"), none`,
                 backgroundRepeat: "no-repeat",
@@ -213,6 +223,7 @@ export default function TaskForm({
               {statusSelect.map((obj) => Object.values(obj)[0])}
             </select>
             <textarea
+              data-testid="description-textarea"
               className="outline-none py-1 px-2 h-64 rounded"
               placeholder="Comments..."
               onChange={(e) =>
@@ -222,6 +233,7 @@ export default function TaskForm({
             ></textarea>
             <aside className="w-full flex flex-row gap-3 justify-center items-center">
               <Button
+                data-testid="save-form-button"
                 primaryColor={false}
                 borderActive={true}
                 width="w-32"

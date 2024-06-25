@@ -1,5 +1,14 @@
+const DEFAULT_BOARD = {
+  todo: [],
+  doing: [],
+  blocked: [],
+  done: [],
+};
+
 export const initialState = {
-  tasks: {},
+  tasks: {
+    ...DEFAULT_BOARD
+  },
   project_id: 0,
 };
 
@@ -26,13 +35,6 @@ export type ActionState = {
     tasks?: TaskStateType;
     project_id?: number | string;
   };
-};
-
-const DEFAULT_BOARD = {
-  todo: [],
-  doing: [],
-  blocked: [],
-  done: [],
 };
 
 export default function taskReducer(state: TaskStateType, action: ActionState) {
