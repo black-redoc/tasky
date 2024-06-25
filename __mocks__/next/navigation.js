@@ -10,3 +10,10 @@ export const useRouter = () => ({
     off: vi.fn(),
   },
 });
+
+export const usePathname = () => ({
+  pathname: '/',
+  query: {},
+  push: vi.fn(),
+  replace: vi.fn(),
+});
