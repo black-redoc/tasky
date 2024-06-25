@@ -15,6 +15,7 @@ export default defineConfig({
     },
     alias: {
       'next/navigation': '/__mocks__/next/navigation.js',
+      'next/font/google': '/__mocks__/next/font/google.js',
     },
   },
 })
