@@ -1,5 +1,5 @@
 "use client";
-import { useReducer } from "react";
+import React, { useReducer } from "react";
 import projectsReducer, {
   editingProjectReducer,
   initialEditingProjectState,
@@ -34,9 +34,15 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
     taskFormReducer,
     taskFormInitialState
   );
-  const [toastState, toastDispatch] = useReducer(toastReducer, toastInitialState);
+  const [toastState, toastDispatch] = useReducer(
+    toastReducer,
+    toastInitialState
+  );
   const [authState, authDispatch] = useReducer(authReducer, authInitialState);
-  const [editingProjectState, editingProjectDispatch] = useReducer(editingProjectReducer, initialEditingProjectState);
+  const [editingProjectState, editingProjectDispatch] = useReducer(
+    editingProjectReducer,
+    initialEditingProjectState
+  );
   return (
     <StateContext.Provider
       value={{
@@ -57,7 +63,7 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
           taskFormDispatch,
           authDispatch,
           toastDispatch,
-          editingProjectDispatch
+          editingProjectDispatch,
         }}
       >
         {children}

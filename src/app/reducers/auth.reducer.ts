@@ -3,6 +3,10 @@ export const initialState = {
   } as UserType
 }
 
+export type AuthState = {
+  user: UserType
+}
+
 export type UserType = {
   username?: string;
   email?: string;
@@ -13,7 +17,7 @@ export type ActionState = {
   payload: UserType
 }
 
-export function authReducer(state: typeof initialState, action: ActionState) {
+export function authReducer(state: AuthState, action: ActionState) {
   if (action.type === 'LOGGING') {
     return {
       ...state,

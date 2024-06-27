@@ -2,13 +2,12 @@
 import { useState, useContext } from "react";
 import { login as loginService } from "../services/auth.service";
 import { md5 } from "js-md5";
-import { DispatchContext, StateContext } from "../contexts/states";
+import { DispatchContext } from "../contexts/states";
 import { useRouter } from "next/navigation";
 import Toast from "./toast";
 
 export default function LoginForm() {
   const { toastDispatch, authDispatch } = useContext(DispatchContext);
-  const { authState } = useContext(StateContext);
   const { push } = useRouter();
   const ERROR_COLOR = "text-red-600";
   const HINT_COLOR = "text-cyan-500";
@@ -48,7 +47,7 @@ export default function LoginForm() {
       email: inputEmail,
       password: md5(inputPassword),
     });
-    if ("error" in response) {
+    if (response.includes("error")) {
       toastDispatch({
         type: "ON_MESSAGE",
         payload: { message: response.error, isError: true },
@@ -81,6 +80,7 @@ export default function LoginForm() {
         </h1>
         <section className="mt-12">
           <input
+            data-testid="input-email"
             type="email"
             placeholder="email"
             autoFocus
@@ -105,6 +105,7 @@ export default function LoginForm() {
             &nbsp;{inputHintEmail}
           </p>
           <input
+            data-testid="input-password"
             type="password"
             placeholder="password"
             title="password"
@@ -129,6 +130,7 @@ export default function LoginForm() {
         </section>
         <section className="absolute bottom-5">
           <button
+            data-testid="submit-btn"
             onClick={onSubmit}
             className={`
           bg-cyan-700 hover:bg-sky-500 w-[19rem]

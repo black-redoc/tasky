@@ -1,3 +1,15 @@
+interface ButtonProps extends React.AnchorHTMLAttributes<HTMLButtonElement> {
+  children?: any;
+  primaryColor?: boolean;
+  width?: string;
+  content?: string;
+  fontSize?: string;
+  textColor?: string;
+  fontWeight?: string;
+  borderActive?: boolean;
+  onClick?: any;
+}
+
 export default function Button({
   children,
   primaryColor,
@@ -8,19 +20,11 @@ export default function Button({
   fontWeight,
   borderActive,
   onClick,
-}: {
-  children?: any;
-  primaryColor?: boolean;
-  width?: string;
-  content?: string;
-  fontSize?: string;
-  textColor?: string;
-  fontWeight?: string;
-  borderActive?: boolean;
-  onClick?: any;
-}) {
+  ...props
+}: ButtonProps) {
   return (
     <button
+      {...props}
       className={`
       text-cyan-600 font-bold text-xl hover:text-white hover:bg-cyan-700 rounded-xl size-12 flex justify-center items-center
       ${primaryColor ? " bg-cyan-800 " : ""}

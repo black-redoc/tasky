@@ -1,2 +1,6 @@
+const INITIAL_POSITION = 0
+const NEXT_POSIOTION = 1
+const SLICE_FROM = 1
+
 export const capitalize = ({ word }: { word: string }) =>
-  `${word.substring(0, 1).toUpperCase()}${word.substring(1)}`;
+  `${word.substring(INITIAL_POSITION, NEXT_POSIOTION).toUpperCase()}${word.substring(SLICE_FROM)}`;

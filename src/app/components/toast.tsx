@@ -21,7 +21,7 @@ export default function Toast() {
       className={`
       absolute top-4 right-0 mx-2 bg-slate-900 rounded-md flex flex-row
       justify-between w-80 h-12 p-2 items-center fade-out
-      ${toastState.message.length > 0 ? "" : "hidden"}
+      ${toastState.message?.length > 0 ? "" : "hidden"}
       `}
     >
       <p

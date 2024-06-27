@@ -2,7 +2,7 @@
 import { useContext } from "react";
 import { DispatchContext, StateContext } from "../contexts/states";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function Dropdown() {
   const pathname = usePathname();
@@ -24,7 +24,7 @@ export default function Dropdown() {
         <></>
       ) : (
         <div className="relative dropdown">
-          <button className="bg-slate-800 rounded-3xl size-8 relative mr-2">
+          <button role="button" className="bg-slate-800 rounded-3xl size-8 relative mr-2">
             <p className="text-cyan-100 font-medium shadow-cyan-790">
               {getInitials()}
             </p>

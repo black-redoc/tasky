@@ -15,6 +15,7 @@ export default function DeleteConfirmation({
     <section className="absolute top-0 bottom-0 left-0 right-0 bg-slate-800/80 flex items-center justify-center">
       <article className="bg-sky-100 w-[18rem] h-[10rem] px-3 py-2 flex flex-col justify-between rounded relative">
         <svg
+          role="button-cancel"
           onClick={onCancel}
           xmlns="http://www.w3.org/2000/svg"
           width="24"
