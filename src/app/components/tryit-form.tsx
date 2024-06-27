@@ -41,6 +41,7 @@ export default function TryitForm() {
     <>
       <form className="relative h-[8.5rem] w-full max-w-[20rem]">
         <input
+          data-testid="input-username"
           type="text"
           placeholder="username"
           autoFocus
@@ -63,6 +64,7 @@ export default function TryitForm() {
           {inputHint}
         </p>
         <button
+          data-testid="submit-btn"
           onClick={onSubmit}
           className={`
         bg-cyan-700 hover:bg-sky-500 w-full h-16
