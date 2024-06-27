@@ -43,6 +43,6 @@ jobs:
       run: |
         pnpm eslint
     - name: Tests
-      run: pnpm tests
+      run: pnpm test
     - name: Coverage
       run: pnpm coverage
