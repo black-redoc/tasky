@@ -5,6 +5,7 @@ export const getProjects = async () =>
     headers: {
       "content-type": "application/json",
     },
+    credentials: 'include'
   }).then(data => data.json()).catch((error) => `Error: ${error.message}`);
 
 export const createProject = async ({ ...project }) =>

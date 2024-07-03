@@ -28,8 +28,9 @@ export default function TryitForm() {
     setInputHint("");
     authDispatch({ type: "TRYING", payload: { username: inputValue } });
     const result = await validateUsername({ username: inputValue });
-    if (Boolean(result)) {
+    if (result.is_user_valid) {
       router.replace("/login");
+      return;
     }
     router.replace("/");
   };

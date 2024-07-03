@@ -47,7 +47,7 @@ export default function LoginForm() {
       email: inputEmail,
       password: md5(inputPassword),
     });
-    if (response.includes("error")) {
+    if (Object.keys(response).includes("error")) {
       toastDispatch({
         type: "ON_MESSAGE",
         payload: { message: response.error, isError: true },
