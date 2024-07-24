@@ -11,7 +11,7 @@ export default function TryitForm() {
   const [hintColor, setHintColor] = useState(ERROR_COLOR);
   const [inputValue, setInputValue] = useState("");
   const router = useRouter();
-  const { authDispatch } = useContext(DispatchContext);
+  const { authDispatch, tryItDispatch } = useContext(DispatchContext);
 
   const onSubmit = async (event: React.FormEvent<HTMLElement>) => {
     event.preventDefault();
@@ -32,6 +32,7 @@ export default function TryitForm() {
       router.replace("/login");
       return;
     }
+    tryItDispatch({ type: "TRYIT" });
     router.replace("/");
   };
 

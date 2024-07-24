@@ -3,11 +3,12 @@ import React, { useContext, useEffect, useState } from "react";
 import ProjectForm from "./components/project-form";
 import Projects from "./components/projects";
 import { useRouter } from "next/navigation";
-import { DispatchContext } from "./contexts/states";
+import { DispatchContext, StateContext } from "./contexts/states";
 
 function Index() {
   const router = useRouter();
   const { authDispatch } = useContext(DispatchContext);
+  const { tryItState } = useContext(StateContext);
   const [isLoading, setIsloading] = useState(true)
   const guardRoute = async () => {
     return await fetch(
@@ -20,6 +21,10 @@ function Index() {
     .catch(error => error)
   }
   useEffect(() => {
+    if (tryItState.enable_tryit) {
+      setIsloading(false)
+      return
+    }
     (async () => {
       const [status, data] = await guardRoute();
       setIsloading(false)
