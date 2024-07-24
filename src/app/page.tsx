@@ -1,19 +1,44 @@
 "use client";
-import React, { useContext, useEffect, memo, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ProjectForm from "./components/project-form";
 import Projects from "./components/projects";
 import { useRouter } from "next/navigation";
-import { StateContext } from "./contexts/states";
+import { DispatchContext, StateContext } from "./contexts/states";
 
 function Index() {
   const router = useRouter();
-  const { authState } = useContext(StateContext);
+  const { authDispatch } = useContext(DispatchContext);
+  const { tryItState } = useContext(StateContext);
+  const [isLoading, setIsloading] = useState(true)
+  const guardRoute = async () => {
+    return await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/protected/`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    ).then(async (response) => [response.status, await response.json()])
+    .catch(error => error)
+  }
   useEffect(() => {
-    if (Boolean(authState.user.email) || Boolean(authState.user.username)) {
-      return;
+    if (tryItState.enable_tryit) {
+      setIsloading(false)
+      return
     }
-    router.push("/home");
+    (async () => {
+      const [status, data] = await guardRoute();
+      setIsloading(false)
+      if (status === 200) {
+        authDispatch({ type: "LOGIN", payload: data });
+        return
+      }
+      router.push("/home");
+    })()
   }, []);
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
   return (
     <>
       <ProjectForm />

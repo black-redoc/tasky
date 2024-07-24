@@ -74,7 +74,6 @@ export const updateProject = async ({
   // Update project in backend
   if (isAuth) {
     const result = await updateProjectService(project);
-    console.log({ result, isAuth }, typeof result === "string");
     if (result != 200) {
       return { message: 'Error while updating project', isError: true };
     }

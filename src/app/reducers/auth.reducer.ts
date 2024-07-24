@@ -18,7 +18,7 @@ export type ActionState = {
 }
 
 export function authReducer(state: AuthState, action: ActionState) {
-  if (action.type === 'LOGGING') {
+  if (action.type === 'LOGIN') {
     return {
       ...state,
       user: {

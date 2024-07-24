@@ -18,6 +18,7 @@ import {
   initialState as authInitialState,
 } from "../reducers/auth.reducer";
 import { toastReducer, toastInitialState } from "../reducers/toast.reducer";
+import { tryItReducer, initialTryItState } from "../reducers/try-it.reducer";
 
 export function StateProvider({ children }: { children: React.ReactNode }) {
   const [projectState, projectDispatch] = useReducer(
@@ -43,6 +44,7 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
     editingProjectReducer,
     initialEditingProjectState
   );
+  const [tryItState, tryItDispatch] = useReducer(tryItReducer, initialTryItState);
   return (
     <StateContext.Provider
       value={{
@@ -53,6 +55,7 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
         authState,
         toastState,
         editingProjectState,
+        tryItState,
       }}
     >
       <DispatchContext.Provider
@@ -64,6 +67,7 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
           authDispatch,
           toastDispatch,
           editingProjectDispatch,
+          tryItDispatch,
         }}
       >
         {children}
