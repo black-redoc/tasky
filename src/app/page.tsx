@@ -16,22 +16,13 @@ function Index() {
       {
         method: "GET",
         credentials: "include",
-        redirect: "manual"
+        redirect: "follow"
       }
-    ).then(response => {
-      if (response.status === 307) {
-        const newLocation = response.headers.get('Location')
-        console.log({response},1)
-        if (!newLocation) {
-          return response
-        }
-        return fetch(newLocation, { method: 'GET', credentials: "include", });
-      }
-      console.log({response},2)
-      return response;
-    }).then(async (response) => {
-      console.log({response},3)
-      return [response.status, await response.json()]
+    ).then(async (response) => {
+      const json = await response.json()
+      const status = response.status
+      console.log({json, status})
+      return [status, json]
     })
     .catch(error => error)
   }
