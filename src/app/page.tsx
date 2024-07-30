@@ -11,29 +11,21 @@ function Index() {
   const { tryItState } = useContext(StateContext);
   const [isLoading, setIsloading] = useState(true)
   const guardRoute = async () => {
-    return fetch('https://tasky-api-production.up.railway.app/protected', {
-      method: 'GET',
-      redirect: 'manual' // Handle redirects manually
-    })
-    .then(response => {
+    return await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/protected/`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    ).then(response => {
       if (response.status === 307) {
-        const newLocation = response.headers.get('Location');
+        const newLocation = response.headers.get('Location') 
+        ?? `${process.env.NEXT_PUBLIC_BACKEND_URL?.replace("http", "https")}/protected/`;
         return fetch(newLocation, { method: 'GET' });
       }
       return response;
-    })
-    .then(async (response) => [response.status, await response.json()])
-    .catch(error => console.error('Error:', error));
-
-    // return await fetch(
-    //   `${process.env.NEXT_PUBLIC_BACKEND_URL}/protected/`,
-    //   {
-    //     method: "GET",
-    //     credentials: "include",
-    //     redirect: 'follow',
-    //   }
-    // ).then(async (response) => [response.status, await response.json()])
-    // .catch(error => error)
+    }).then(async (response) => [response.status, await response.json()])
+    .catch(error => error)
   }
   useEffect(() => {
     if (tryItState.enable_tryit) {
