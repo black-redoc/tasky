@@ -20,7 +20,11 @@ function Index() {
       }
     ).then(response => {
       if (response.status === 307) {
-        const newLocation = response.headers.get('Location')!
+        const newLocation = response.headers.get('Location')
+        console.log({response},1)
+        if (!newLocation) {
+          return response
+        }
         return fetch(newLocation, { method: 'GET', credentials: "include", });
       }
       console.log({response},2)
