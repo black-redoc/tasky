@@ -16,11 +16,11 @@ function Index() {
       {
         method: "GET",
         credentials: "include",
+        redirect: "manual"
       }
     ).then(response => {
       if (response.status === 307) {
-        const newLocation = response.headers.get('Location') 
-        ?? `${process.env.NEXT_PUBLIC_BACKEND_URL?.replace("http", "https")}/protected/`;
+        const newLocation = response.headers.get('Location')!
         return fetch(newLocation, { method: 'GET' });
       }
       return response;
