@@ -23,8 +23,12 @@ function Index() {
         const newLocation = response.headers.get('Location')!
         return fetch(newLocation, { method: 'GET' });
       }
+      console.log({response},2)
       return response;
-    }).then(async (response) => [response.status, await response.json()])
+    }).then(async (response) => {
+      console.log({response},3)
+      return [response.status, await response.json()]
+    })
     .catch(error => error)
   }
   useEffect(() => {
