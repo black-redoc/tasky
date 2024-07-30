@@ -16,6 +16,7 @@ function Index() {
       {
         method: "GET",
         credentials: "include",
+        redirect: 'follow',
       }
     ).then(async (response) => [response.status, await response.json()])
     .catch(error => error)
