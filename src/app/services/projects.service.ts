@@ -6,7 +6,13 @@ export const getProjects = async () =>
       "content-type": "application/json",
     },
     credentials: 'include'
-  }).then(data => data.json()).catch((error) => `Error: ${error.message}`);
+  }).then(data =>{
+    if (data.status == 200) {
+      return data.json()
+    }
+    return data.status == 401 ? { message: 'Unauthorized' } : { message: data.json() }
+
+  }).catch((error) => `Error: ${error.message}`);
 
 export const createProject = async ({ ...project }) =>
   await fetch(`${BACKEND_URL}/projects/`, {
