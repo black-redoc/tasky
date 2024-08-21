@@ -14,6 +14,7 @@ import {
 import { ActionState as AuthActionState, UserType } from "../reducers/auth.reducer";
 import { ToastActionState, ToastType } from "../reducers/toast.reducer";
 import { ActionState as ActionTryItState } from "../reducers/try-it.reducer";
+import { ActionState as ActionIsLoadingState } from "../reducers/isLoading.reducer";
 
 export const StateContext = createContext({
   projectState: { projects: [] as ProjectType[] },
@@ -24,6 +25,7 @@ export const StateContext = createContext({
   toastState: {} as ToastType,
   editingProjectState: { project: {} as ProjectType },
   tryItState: { enable_tryit: false },
+  isLoadingState: { isLoading: false }
 });
 export const DispatchContext = createContext({
   projectDispatch: (action: ProjectActionState) => { },
@@ -34,4 +36,5 @@ export const DispatchContext = createContext({
   toastDispatch: (action: ToastActionState) => { },
   editingProjectDispatch: (action: ActionEditingProjectState) => { },
   tryItDispatch: (action: ActionTryItState) => { },
+  isLoadingDispatch: (action: ActionIsLoadingState) => { }
 });

@@ -8,30 +8,48 @@ import { uuidv4 } from "../services/uuid.service";
 import { ProjectStateType } from "../reducers/projects.reducer";
 import { TaskStateType } from "../reducers/tasks.reducer";
 
-export const getProjects = async ({ isAuth, projectDispatch }: { isAuth: boolean, projectDispatch: any }) => {
+export const getProjects = async ({
+  isAuth,
+  projectDispatch,
+  isLoadingDispatch,
+}: {
+  isAuth: boolean;
+  projectDispatch: any;
+  isLoadingDispatch: any;
+}) => {
   // Get projects from backend
+  isLoadingDispatch({ type: "LOADING" });
   if (isAuth) {
     const projects = await getProjectsService();
-    if (typeof projects == "string") {
-      return { message: projects, isError: true };
+    if (Object.keys(projects).includes("message")) {
+      isLoadingDispatch({ type: "LOADED" });
+      return { message: projects.message, isError: true };
     }
-    projectDispatch({ type: 'ADD_ALL', payload: projects })
+    projectDispatch({ type: "ADD_ALL", payload: projects });
   }
+  isLoadingDispatch({ type: "LOADED" });
   // Get projects from client
   return;
 };
 
 export const getProjectByTitle = ({
-  title, projectState
+  title,
+  projectState,
 }: {
-  title: string; projectState: ProjectStateType;
+  title: string;
+  projectState: ProjectStateType;
 }): [TaskStateType, number] | null => {
-  const filteredProject = projectState.projects.filter((project: any) => project.title == title)[0]
+  const filteredProject = projectState.projects.filter(
+    (project: any) => project.title == title
+  )[0];
   if (!filteredProject) {
-    return null
+    return null;
   }
-  const tasks = filteredProject.tasks
-  return [groupBy({ arr: tasks, criteria: 'status' }) as TaskStateType, filteredProject.id as number]
+  const tasks = filteredProject.tasks;
+  return [
+    groupBy({ arr: tasks, criteria: "status" }) as TaskStateType,
+    filteredProject.id as number,
+  ];
 };
 
 export const createProject = async ({
@@ -40,11 +58,11 @@ export const createProject = async ({
   projectDispatch,
 }: {
   isAuth: boolean;
-  project: any
+  project: any;
   projectDispatch: any;
 }) => {
   // Create project in backend
-  let response
+  let response;
   if (isAuth) {
     response = await createProjectService(project);
     if (typeof response === "string") {
@@ -58,14 +76,14 @@ export const createProject = async ({
     ...project,
     id: uuidv4(),
   };
-  projectDispatch({ type: 'CREATE_PROJECT', payload: response ?? newProject })
+  projectDispatch({ type: "CREATE_PROJECT", payload: response ?? newProject });
   return { message: "Project created successfully!" };
 };
 
 export const updateProject = async ({
   isAuth,
   project,
-  projectDispatch
+  projectDispatch,
 }: {
   isAuth: boolean;
   project: any;
@@ -75,11 +93,11 @@ export const updateProject = async ({
   if (isAuth) {
     const result = await updateProjectService(project);
     if (result != 200) {
-      return { message: 'Error while updating project', isError: true };
+      return { message: "Error while updating project", isError: true };
     }
   }
   // // Update project in client
-  projectDispatch({ type: 'UPDATE_PROJECT', payload: project })
+  projectDispatch({ type: "UPDATE_PROJECT", payload: project });
   return {
     message: `Updated project ${project.title} successfully!`,
   };

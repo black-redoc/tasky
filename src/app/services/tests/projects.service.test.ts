@@ -14,9 +14,9 @@ describe("Projects service", () => {
   });
 
   it("should get projects", async () => {
-    const expected_value = "Success";
+    const expected_value = { projects: [] };
     global.fetch = vi.fn(() =>
-      Promise.resolve({ json: () => expected_value })
+      Promise.resolve({ json: () => expected_value, status: 200 })
     ) as Mock;
     const mock = vi.fn().mockImplementation(getProjects);
     mock.mockResolvedValue(expected_value);
@@ -37,7 +37,7 @@ describe("Projects service", () => {
 
   it("should updateProject a project", async () => {
     const expected_value = 200;
-    vi.stubGlobal("fetch", () => Promise.resolve({ status:  200}))
+    vi.stubGlobal("fetch", () => Promise.resolve({ status: 200 }))
     const mock = vi.fn().mockImplementation(updateProject);
     mock.mockResolvedValue(expected_value);
     const res = await updateProject({ title: "test" });

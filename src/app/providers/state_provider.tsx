@@ -19,6 +19,7 @@ import {
 } from "../reducers/auth.reducer";
 import { toastReducer, toastInitialState } from "../reducers/toast.reducer";
 import { tryItReducer, initialTryItState } from "../reducers/try-it.reducer";
+import { isLoadingReducer, initialState as initialIsLoadingState } from "../reducers/isLoading.reducer";
 
 export function StateProvider({ children }: { children: React.ReactNode }) {
   const [projectState, projectDispatch] = useReducer(
@@ -45,6 +46,10 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
     initialEditingProjectState
   );
   const [tryItState, tryItDispatch] = useReducer(tryItReducer, initialTryItState);
+  const [isLoadingState, isLoadingDispatch] = useReducer(
+    isLoadingReducer,
+    initialIsLoadingState
+  );
   return (
     <StateContext.Provider
       value={{
@@ -56,6 +61,7 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
         toastState,
         editingProjectState,
         tryItState,
+        isLoadingState,
       }}
     >
       <DispatchContext.Provider
@@ -68,6 +74,7 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
           toastDispatch,
           editingProjectDispatch,
           tryItDispatch,
+          isLoadingDispatch
         }}
       >
         {children}

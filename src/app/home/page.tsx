@@ -1,8 +1,18 @@
 "use client";
 import TryitForm from "../components/tryit-form";
 import Image from "next/image";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
+const IS_PREVIEW = process.env.NEXT_PUBLIC_IS_PREVIEW;
 export default function Home() {
+  const router = useRouter();
+  useEffect(() => {
+    if (!IS_PREVIEW) {
+      router.push("/");
+      return;
+    }
+  }, []);
   return (
     <>
       <section
