@@ -21,9 +21,9 @@ export const getProjects = async ({
   isLoadingDispatch({ type: "LOADING" });
   if (isAuth) {
     const projects = await getProjectsService();
-    if (typeof projects == "string") {
+    if (Object.keys(projects).includes("message")) {
       isLoadingDispatch({ type: "LOADED" });
-      return { message: projects, isError: true };
+      return { message: projects.message, isError: true };
     }
     projectDispatch({ type: "ADD_ALL", payload: projects });
   }

@@ -10,7 +10,7 @@ export const getProjects = async () =>
     if (data.status == 200) {
       return data.json()
     }
-    return data.status == 401 ? { message: 'Unauthorized' } : { message: data.json() }
+    return data.status == 401 ? ({ message: 'Unauthorized' }) : ({ message: data.json() })
 
   }).catch((error) => `Error: ${error.message}`);
 

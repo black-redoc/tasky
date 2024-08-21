@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { describe, expect, it, vi, beforeEach, afterEach, Mock } from "vitest";
 import {
   createProject,
   getProjectByTitle,
@@ -25,15 +25,18 @@ describe("Projects repository", () => {
     ];
     global.fetch = vi.fn().mockResolvedValue({
       json: () => expected_result,
+      status: 200
     });
     const mock = vi.fn().mockImplementation(getProjects);
     mock.mockResolvedValue(expected_result);
     const isAuth: boolean = true;
     const projectDispatch: any = (action: string) => { };
+    const isLoadingDispatch: any = (action: string) => { };
     mock.mockResolvedValue(expected_result);
     const result = await getProjects({
       isAuth,
       projectDispatch,
+      isLoadingDispatch
     });
     expect(result).toBeFalsy()
   });
@@ -48,9 +51,11 @@ describe("Projects repository", () => {
     const isAuth: boolean = false;
     const projectDispatch: any = (action: string) => { };
     mock.mockResolvedValue(expected_result);
+    const isLoadingDispatch: any = (action: string) => { };
     const result = await getProjects({
       isAuth,
       projectDispatch,
+      isLoadingDispatch
     });
     expect(result).toBeFalsy()
   });
@@ -63,15 +68,17 @@ describe("Projects repository", () => {
     }
     global.fetch = vi.fn().mockResolvedValue({
       json: () => "error",
+      status: 500
     });
     const mock = vi.fn().mockImplementation(getProjects);
     mock.mockResolvedValue(expected_result);
     const isAuth: boolean = true;
     const projectDispatch: any = (action: string) => { };
-    mock.mockResolvedValue(expected_result);
+    const isLoadingDispatch: any = (action: string) => { };
     const result = await getProjects({
       isAuth,
       projectDispatch,
+      isLoadingDispatch
     });
     expect(result).toEqual(expected_result);
   });
